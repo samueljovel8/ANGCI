@@ -1,0 +1,26 @@
+{
+    "name": "Extraer datos SIRAI / SAE-NIE",
+    "version": "2.4",
+    
+    "manifest_version": 2,
+    "description": "Ingreso de notas a los sistemas SAE/SIARI",
+    "icons": {
+        "48": "icons/Icon-48.png",
+        "128": "icons/Icon-100.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+			"*://aplicaciones.mined.gob.sv/*",
+			"*://matricula.mined.gob.sv/*"
+			],
+	    
+            "js": ["js/jquery-1.4.2.min.js", "js/saeSiraiExt.js"],
+			"css": ["css/clipfish_de.css"],
+            "run_at" : "document_end"
+        }
+        
+    ],
+    "web_accessible_resources": ["icons/extension_logo.png"]
+   
+}

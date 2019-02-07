@@ -1,0 +1,36 @@
+.estilotextarea {resize:none;border: 1px solid #3B0B17;}
+
+.boton1{
+    text-decoration: none;
+    padding: 1px;
+    width: 25%;
+    font-family: times new roman;
+    font-weight: 200;
+    font-size: 12px;
+    font-style: times new roman;
+    color: #EFF5FB;
+    background-color: #3B0B17;
+    border-radius: 45px;
+    border: 3px double #3B0B17;
+  }
+  .boton1:hover{
+    opacity: 0.4;
+    text-decoration: none;
+  } 
+ .boton2{
+    text-decoration: none;
+    padding: 1px;
+    width:75%;
+    font-family: times new roman;
+    font-weight: 200;
+    font-size: 12px;
+    font-style: times new roman;
+    color: #EFF5FB;
+    background-color: #3B0B17;
+    border-radius: 45px;
+    border: 3px double #3B0B17;
+  }
+  .boton2:hover{
+    opacity: 0.4;
+    text-decoration: none;
+  } 

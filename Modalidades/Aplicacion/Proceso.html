@@ -1,0 +1,2996 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ANGCI</title>
+<link rel="stylesheet" href="Estilos/style.css">
+<link rel="stylesheet" href="Estilos/estilosProceso.css">
+<style type="text/css">
+</style>
+
+<script type="text/javascript" src="JS/baseMultiplesSessiones1.js"></script>
+<script type="text/javascript" src="JS/baseMultiplesSessiones2.js"></script>
+<script type="text/javascript" src="JS/baseMultiplesSessiones3.js"></script>
+
+<script type="text/javascript" src="JS/almacenarTodos.js"></script>
+<script type="text/javascript" src="JS/baseBasica.js"></script>
+<script type="text/javascript" src="JS/basePrimerAnio.js"></script>
+<script type="text/javascript" src="JS/baseMultiplesSessiones.js"></script>
+<script type="text/javascript" src="JS/almacenarSession.js"></script>
+<script type="text/javascript" src="JS/fOrdenar.js"></script>
+<script type="text/javascript" src="JS/fTransformar.js"></script>
+<script type="text/javascript" src="JS/fBusqueda.js"></script>
+<script type="text/javascript" src="JS/fCalcularDatos.js"></script>
+
+<script type="text/javascript" src="JS/fAr.js"></script>
+<script type="text/javascript" src="JS/fEnviarEncabezado.js"></script>
+<script type="text/javascript" src="JS/fGenerarCuadros.js"></script>
+<script type="text/javascript" src="JS/fNoEncontradosAlComparar.js"></script>
+<script type="text/javascript" src="JS/fQuitarComas.js"></script>
+<script type="text/javascript" src="JS/basePersistencia.js"></script>
+<script type="text/javascript" src="JS/fAgregarAlumno.js"></script>
+<script type="text/javascript" src="JS/fCompararYReemplezarAlumnos.js"></script>
+<script type="text/javascript" src="JS/fCargarPorDefectoEnEncabezados.js"></script>
+<script type="text/javascript" src="JS/fFinalizarComparar.js"></script>
+<script type="text/javascript" src="JS/fSecciones.js"></script>
+<script type="text/javascript" src="JS/fSeccionesVarias.js"></script>
+<script type="text/javascript" src="JS/basePersistenciaIniciales.js"></script>
+<script type="text/javascript">
+
+//cargarNombresTablaSirai();
+//-------------------------------------
+//Se crea un diccionario global que contiene los nombres del dicNombreSirai que no fueron encontrados, esto con el fin de que cada funcion
+//pueda acceder a las llaves de cada nombre para poder editarlas correctamente.
+var dicNoEncontrados={};
+//-------------------------------------
+//Se crea un diccionario global que contendra todos los nombres de arrayNombresCuadros con esto se facilita el acceso a cada registro 
+//mediante una llave para poder editar el registro necesario para igualar los nombres de los cuadros de notas a los de la nomina del sirai.
+var dicNombresCuadros={};
+var dicNoEncontradosN1 = {};
+var dicNiesNoEncontrados = {};
+//-------------------------------------
+var finalLenguajeGM1=[];
+var finalMatematicasGM1=[];					
+var finalCienciasGM1=[];
+var finalSocialesGM1=[];
+var finalInglesGM1=[];
+
+var finalLenguajeGM2=[];
+var finalMatematicasGM2=[];					
+var finalCienciasGM2=[];
+var finalSocialesGM2=[];
+var finalInglesGM2=[];
+
+var finalLenguajeGM3=[];
+var finalMatematicasGM3=[];					
+var finalCienciasGM3=[];
+var finalSocialesGM3=[];
+var finalInglesGM3=[];
+
+var finalLenguajeGM4=[];
+var finalMatematicasGM4=[];					
+var finalCienciasGM4=[];
+var finalSocialesGM4=[];
+var finalInglesGM4=[];
+
+var finalLenguajeGM5=[];
+var finalMatematicasGM5=[];					
+var finalCienciasGM5=[];
+var finalSocialesGM5=[];
+var finalInglesGM5=[];
+
+var finalLenguajeGPE=[];
+var finalMatematicasGPE=[];					
+var finalCienciasGPE=[];
+var finalSocialesGPE=[];
+//-------------------------------------
+var totalHombres = 0;
+var totalMujeres = 0;
+var nombreActualPresionado="";
+
+//Variable que impide que la base de persistencia de datos completos de alumnos se actualice cada vez que
+//se presione el boton ordenar.
+var kdabra=0;
+
+/*
+	FUNCIONES UTILIZADAS PARA GESTIONAR LA BASE DE DATOS LOCAL CON INDEXEDDB
+
+*/
+var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+var dataBase = null;
+var dataBase1 = null;
+crearBaseHeadInstitucional();
+crearBaseHeadBasica();
+crearBaseTodos();
+crearBaseHeadPersistencia();
+crearBaseHeadPersistenciaINI();
+
+
+
+
+/*
+	TERMINAN LAS FUNCIONES UTILIZADAS PARA GESTIONAR LA BASE DE DATOS LOCAL CON INDEXEDDB
+
+*/
+
+function habilitarNies()
+{
+	var estado = document.getElementById('habilitarN');
+	if(estado.checked== true)
+	{
+		document.getElementById("nies").readOnly  = false;
+		
+		document.getElementById("nombresSirai").readOnly  = false;
+		document.getElementById("nombresCuadros").readOnly  = false;
+		
+		document.getElementById("lenguajeM1").readOnly  = false;
+		document.getElementById("matematicasM1").readOnly  = false;
+		document.getElementById("cienciasM1").readOnly  = false;
+		document.getElementById("socialesM1").readOnly  = false;
+		document.getElementById("inglesM1").readOnly  = false;
+		
+		document.getElementById("lenguajeM2").readOnly  = false;
+		document.getElementById("matematicasM2").readOnly  = false;
+		document.getElementById("cienciasM2").readOnly  = false;
+		document.getElementById("socialesM2").readOnly  = false;
+		document.getElementById("inglesM2").readOnly  = false;
+		
+		document.getElementById("lenguajeM3").readOnly  = false;
+		document.getElementById("matematicasM3").readOnly  = false;
+		document.getElementById("cienciasM3").readOnly  = false;
+		document.getElementById("socialesM3").readOnly  = false;
+		document.getElementById("inglesM3").readOnly  = false;
+		
+		document.getElementById("lenguajeM4").readOnly  = false;
+		document.getElementById("matematicasM4").readOnly  = false;
+		document.getElementById("cienciasM4").readOnly  = false;
+		document.getElementById("socialesM4").readOnly  = false;
+		document.getElementById("inglesM4").readOnly  = false;
+		
+		document.getElementById("lenguajeM5").readOnly  = false;
+		document.getElementById("matematicasM5").readOnly  = false;
+		document.getElementById("cienciasM5").readOnly  = false;
+		document.getElementById("socialesM5").readOnly  = false;
+		document.getElementById("inglesM5").readOnly  = false;
+		
+	}else
+	{
+		document.getElementById("nies").readOnly  = true;
+		
+		document.getElementById("nombresSirai").readOnly  = true;
+		document.getElementById("nombresCuadros").readOnly  = true;
+		
+		document.getElementById("lenguajeM1").readOnly  = true;
+		document.getElementById("matematicasM1").readOnly  = true;
+		document.getElementById("cienciasM1").readOnly  = true;
+		document.getElementById("socialesM1").readOnly  = true;
+		document.getElementById("inglesM1").readOnly  = true;
+		
+		document.getElementById("lenguajeM2").readOnly  = true;
+		document.getElementById("matematicasM2").readOnly  = true;
+		document.getElementById("cienciasM2").readOnly  = true;
+		document.getElementById("socialesM2").readOnly  = true;
+		document.getElementById("inglesM2").readOnly  = true;
+		
+		document.getElementById("lenguajeM3").readOnly  = true;
+		document.getElementById("matematicasM3").readOnly  = true;
+		document.getElementById("cienciasM3").readOnly  = true;
+		document.getElementById("socialesM3").readOnly  = true;
+		document.getElementById("inglesM3").readOnly  = true;
+		
+		document.getElementById("lenguajeM4").readOnly  = true;
+		document.getElementById("matematicasM4").readOnly  = true;
+		document.getElementById("cienciasM4").readOnly  = true;
+		document.getElementById("socialesM4").readOnly  = true;
+		document.getElementById("inglesM4").readOnly  = true;
+		
+		document.getElementById("lenguajeM5").readOnly  = true;
+		document.getElementById("matematicasM5").readOnly  = true;
+		document.getElementById("cienciasM5").readOnly  = true;
+		document.getElementById("socialesM5").readOnly  = true;
+		document.getElementById("inglesM5").readOnly  = true;
+	}
+}
+function habilitarAgregarAlumno()
+{
+	document.getElementById('btnCero').disabled=false;
+	document.getElementById('btnCero').classList.remove('boton2p');
+	document.getElementById('btnCero').classList.add('boton2pact');
+}
+function desactivarAgregarAlumno()
+{
+	document.getElementById('btnCero').disabled=true;
+	document.getElementById('btnCero').classList.remove('boton2pact');
+	document.getElementById('btnCero').classList.add('boton2p');
+}
+
+function nombreActual(nombre)
+{
+	nombreActualPresionado = nombre;
+	//alert(nombreActualPresionado);
+}
+/*
+function borrarCacheTemporal()
+{
+	//var dicNoEncontrados={""};
+	var dicNombresCuadros="";
+	var finalLenguajeG="";
+	var finalMatematicasG="";
+	var finalCienciasG="";
+	var finalSocialesG="";
+	var finalInglesG="";
+
+var totalHombres = 0;
+var totalMujeres = 0;
+}
+*/
+function cargarNombresTablaSirai()
+{
+	//var niesTablaSiraiL= localStorage.getItem("niesTablaSirai");
+	//var niesTablaSiraiVec = JSON.parse(niesTablaSiraiL);
+	
+	var nombresTablaSiraiL= window.localStorage.getItem('nomCompTSirai');
+	var nombresTablaSiraiVec = JSON.parse(nombresTablaSiraiL);
+	alert(nombresTablaSiraiVec);
+	//for(i=0;i<nombresTablaSiraiVec.length-1;i++){
+	//	document.getElementById('nombresSirai').value = nombresTablaSiraiVec[i];
+	//}
+	//document.getElementById('nombresSirai').value = nombresTablaSiraiVec;
+}
+
+function encabezado()
+{
+	var nivelEducativo = '1';
+	if(nivelEducativo == '0')
+	{
+		document.location.href = "#encabezadoAlfa"; 
+		abrirModal('encabezadoAlfa');
+		
+		//alert("uno");
+	}else if(nivelEducativo == '1')
+	{
+		document.location.href = "#encabezadoBasica"; 
+		abrirModal('encabezadoBasica');
+		
+		//alert("uno");
+	} else if(nivelEducativo == '2')
+	{
+		document.location.href = "#encabezadoPrimerAnio"; 
+		abrirModal('encabezadoPrimerAnio');
+	}else if(nivelEducativo == '3') 
+	{
+		document.location.href = "#encabezadoPrimerAnio"; 
+		abrirModal('encabezadoPrimerAnio');
+	}else if(nivelEducativo == '4') 
+	{
+		document.location.href = "#encabezadoCertificado"; 
+		abrirModal('encabezadoCertificado');
+	}
+	
+}
+function limpiarTextA(idT){
+	document.getElementById(idT).value = "";
+}
+function limpiarTa(id,id2){
+	document.getElementById(id).value = "";
+	document.getElementById(id2).innerHTML = "Total: 0";
+	//document.getElementById('botonMejorarTexto').disabled=true;
+
+}
+function limpiarTodo(){
+	document.getElementById('nies').value = "";
+	document.getElementById('nombresSirai').value = "";
+	document.getElementById('nombresCuadros').value = "";
+	
+	//***********************************************************************************************
+	document.getElementById('lenguajeM1').value = "";
+	document.getElementById('matematicasM1').value = "";
+	document.getElementById('cienciasM1').value = "";
+	document.getElementById('socialesM1').value = "";
+	document.getElementById('inglesM1').value = "";
+	
+	document.getElementById('lenguajeM2').value = "";
+	document.getElementById('matematicasM2').value = "";
+	document.getElementById('cienciasM2').value = "";
+	document.getElementById('socialesM2').value = "";
+	document.getElementById('inglesM2').value = "";
+	
+	document.getElementById('lenguajeM3').value = "";
+	document.getElementById('matematicasM3').value = "";
+	document.getElementById('cienciasM3').value = "";
+	document.getElementById('socialesM3').value = "";
+	document.getElementById('inglesM3').value = "";
+	
+	document.getElementById('lenguajeM4').value = "";
+	document.getElementById('matematicasM4').value = "";
+	document.getElementById('cienciasM4').value = "";
+	document.getElementById('socialesM4').value = "";
+	document.getElementById('inglesM4').value = "";
+	
+	document.getElementById('lenguajeM5').value = "";
+	document.getElementById('matematicasM5').value = "";
+	document.getElementById('cienciasM5').value = "";
+	document.getElementById('socialesM5').value = "";
+	document.getElementById('inglesM5').value = "";
+	//***********************************************************************************************
+	document.getElementById('labelNombresSirai').innerHTML = "Total: 0";
+	document.getElementById('labelNombresCuadros').innerHTML = "Total: 0";
+	document.getElementById('labelLenguaje').innerHTML = "Total: 0";
+	document.getElementById('labelMatematicas').innerHTML = "Total: 0";
+	document.getElementById('labelCiencias').innerHTML = "Total: 0";
+	document.getElementById('labelSociales').innerHTML = "Total: 0";
+	document.getElementById('labelIngles').innerHTML = "Total: 0";
+	
+	document.getElementById('botonOrdenar').disabled=true;
+	document.getElementById('botonMejorarTexto').disabled=true;
+
+}
+
+function habilitarCopiar(){
+	
+	document.getElementById('c2').disabled=true;
+	
+}
+
+//Funcion para copiar texto, muestra mensaje de exito.
+function copiarTexto(id_elemento,id_boton){
+	
+	
+	var aux = document.createElement('input');
+	aux.setAttribute('value', document.getElementById(id_elemento).value);
+	document.body.appendChild(aux);
+	aux.select();
+	document.execCommand('copy');
+	var aviso = document.createElement('div');
+	aviso.setAttribute('id', 'aviso');
+	aviso.style.cssText = 'position:fixed; z-index: 9999999; top: 50%;left:50%;margin-left: -70px;padding: 20px; background: #3B0B17;border-radius: 8px;font-family: lucida calligraphy; color: white';
+	aviso.innerHTML = 'COPIADO';
+	
+	document.body.appendChild(aviso);
+	document.load = setTimeout('document.body.removeChild(aviso)', 1200);
+	
+	document.body.removeChild(aux);
+	document.getElementById(id_boton).disabled=false;
+	
+	
+}
+
+
+function habilitarOrdenar()
+{
+	document.getElementById('botonOrdenar').disabled=false;
+	document.getElementById('botonOrdenar').classList.remove('boton21');
+	document.getElementById('botonOrdenar').classList.add('boton222');
+	cambiarImg('img1');
+}
+
+
+//Funcion que establece ceros en el TextArea donde no existan notas para una determinada materia.
+function ceros(id){
+	var ceros=[];
+	
+	var nombresCuadrosText = document.getElementById('nombresCuadros').value;
+	var arrayNombresCuadros = nombresCuadrosText.split("\n");
+	
+	var totalnombresCuadros = arrayNombresCuadros.length-1;
+	
+	for(i=0;i<=totalnombresCuadros-1;i++){
+		ceros.push(0+"\n");
+	
+	}
+	document.getElementById(id).value = ceros;
+	
+	var cerosSinComas = document.getElementById(id).value;
+	var sinComas = cerosSinComas.replace(/,/g,"");
+	document.getElementById(id).value = sinComas;
+	
+}
+
+
+
+function habilitarTerminar(){
+	if((Object.keys(dicNoEncontrados).length)!=0){
+		document.getElementById('cerrar').classList.remove('boton4');
+		document.getElementById('cerrar').classList.add('boton3');
+		document.getElementById('cerrar').disabled=true;
+	}
+	if((Object.keys(dicNoEncontrados).length)==0){
+		document.getElementById('cerrar').classList.remove('boton3');
+		document.getElementById('cerrar').classList.add('boton4');
+		document.getElementById('cerrar').disabled=false;
+	}
+	
+}
+
+function abrirModal(idm){
+	//var cerrar = document.getElementById('openModal');
+	document.location.href = "#"+idm;
+	document.getElementById(idm).style.display = 'block';
+	//cerrar.close();
+}
+function cerrarModal(idmm){
+	//var cerrar = document.getElementById('openModal');
+	document.getElementById(idmm).style.display = 'none';
+	//cerrar.close();
+}
+
+function cerrarModelHead(id){
+	document.getElementById(id).style.display = 'none';
+}
+
+function limpiar(idk){
+	var tabla2 = '<table border=0 width=100%>';	
+    
+     tabla2 += '<tr><td id=R0></td></tr>';
+	 
+	tabla2 += '</table>';
+	document.getElementById(idk).innerHTML = tabla2;
+}
+
+function noEnter(texto, e)	{
+	if (navigator.appName == "Netscape") 
+		tecla = e.which;
+	else tecla = e.keyCode;
+		if (tecla == 13) return false;
+		else	
+			return true;
+}
+
+ function cambiarImg(id1) {
+  document.getElementById(id1).src = "Imagenes/flecha2.png";
+ }
+ 
+ function volverImg(id2) {
+  document.getElementById(id2).src = "Imagenes/flecha1.png";
+ }
+ 
+
+function asignarGenerosAbrir()
+{
+	document.location.href = "#selecGenero";
+	document.getElementById('selecGenero').style.display = 'block';
+	document.getElementById('encabezadoBasica').style.display = 'none';
+	
+}
+//variable global el valor de uno, hace que la funcion asignarGeneroCerrar, abra el modal de encabezado de educacion basica.
+// el valor de dos, habre el modal de encabezado de alfabetizacion
+var modalGeneroVar=0;
+//Funcion que cambia el valor de la variable global modalGeneroVar, para cambiar la forma de cerrar el modal de asignar genero.
+function cambiarAsignarGenero(varG){
+	modalGeneroVar = varG;
+}
+
+function asignarGenerosCerrar()
+{
+	if(modalGeneroVar==1){
+		document.location.href = "#encabezadoBasica";
+		document.getElementById('encabezadoBasica').style.display = 'block';
+		document.getElementById('selecGenero').style.display = 'none';
+	}else if(modalGeneroVar==2){
+		document.location.href = "#encabezadoAlfa";
+		document.getElementById('encabezadoAlfa').style.display = 'block';
+		document.getElementById('selecGenero').style.display = 'none';
+	}
+	
+}
+
+function cuadroDialogoDistAbrir()
+{
+	document.location.href = "#distribuirAlumnos";
+	document.getElementById('distribuirAlumnos').style.display = 'block';
+
+}
+
+function cuadroDialogoDistCerrar()
+{
+	document.getElementById('distribuirAlumnos').style.display = 'none';
+	document.getElementById("nombresCuadros").readOnly  = false;
+}
+
+function cuadroDialogo1Abrir()
+{
+	document.location.href = "#cuadroDialogo";
+	document.getElementById('cuadroDialogo').style.display = 'block';
+}
+
+function cuadroDialogo1Cerrar()
+{
+	document.getElementById('cuadroDialogo').style.display = 'none';
+}
+
+function cuadroDialogo2Abrir()
+{
+	document.location.href = "#cuadroDialogo1";
+	document.getElementById('cuadroDialogo1').style.display = 'block';
+}
+
+function cuadroDialogo2Cerrar()
+{
+	document.getElementById('cuadroDialogo1').style.display = 'none';
+}
+
+var vecEstadosGeneros=[];
+function editarGenerosTabla()
+{
+	var vecNombresAprobados=[];
+	var nombres = document.getElementById('nombresSirai').value;
+	var nombresVec = nombres.split("\n");
+	
+	var leng = document.getElementById('lenguaje').value;
+	var lengVec = leng.split("\n");
+	var mat = document.getElementById('matematicas').value;
+	var matVec = mat.split("\n");
+	var cien = document.getElementById('ciencias').value;
+	var cienVec = cien.split("\n");
+	var soc = document.getElementById('sociales').value;
+	var socVec = soc.split("\n");
+	var ing = document.getElementById('ingles').value;
+	var ingVec = ing.split("\n");
+	
+	for(i=0;i<=nombresVec.length-1;i++)
+	{
+		if(lengVec[i]>=4.5 && matVec[i]>=4.5 && cienVec[i]>=4.5 && socVec[i]>=4.5 && (ingVec[i]>=4.5 || ingVec[i]==0.0))
+		{
+			vecNombresAprobados.push(nombresVec[i]);
+		}
+	}
+	
+	var totalAprobados=vecNombresAprobados.length;
+	var tabla1 = '<table border=1 HEIGHT=10% WIDTH=100% bordercolor="3B0B17">';	
+    for(i=0;i<=vecNombresAprobados.length-1;i++)
+    {
+		var est = '';
+		if(vecEstadosGeneros[i]=='true'){
+			est = 'checked';
+		}
+     tabla1 += '<tr><td id=g'+i+'  valign="top" align="top">'+ vecNombresAprobados[i]+'</td><td><span style="text-align:right"><input onClick="sumarGenero(this,'+totalAprobados+');" type="checkbox" id="gen'+i+'" '+est+'></span>'+'</td></tr>';;
+	}
+ 	tabla1 += '</table>';
+    document.getElementById('nombresS').innerHTML = tabla1;
+	
+	
+}
+
+function sumarGenero(p,totalAp)
+{
+	//alert(p.id);
+	//totalMujeres=0;
+	//totalHombres=0;
+	var estadoGenero = document.getElementById(p.id);
+    var nombres = document.getElementById('nombresSirai').value;
+	var nombresVec = nombres.split("\n");
+	
+	var idEstadoVec = p.id.split('gen');
+	var idEV = String(idEstadoVec).replace(/,/g,"");
+	//alert(idEV);
+	
+	total = totalAp;
+	//total = nombresVec.length-1;
+	if(estadoGenero.checked==true){
+		totalMujeres++;
+		totalHombres = total - totalMujeres;
+		vecEstadosGeneros[idEV]='true';
+	}else{
+		totalMujeres--;
+		totalHombres = total - totalMujeres;
+		vecEstadosGeneros[idEV]='false';
+	}
+	
+	document.getElementById('hombresCont').innerHTML = totalHombres;
+	document.getElementById('mujeresCont').innerHTML = totalMujeres;
+	//alert("Mujeres" + totalMujeres + "Hombres" + totalHombres);
+	//alert(vecEstadosGeneros[idEV]);
+}
+
+function enviarGeneroTotal()
+{
+	
+	localStorage.setItem("totalMujeresCalculado", totalMujeres);
+	localStorage.setItem("totalHombresCalculado", totalHombres);
+}
+
+
+
+function mandarNotas() 
+{
+	var vecCincoNotas = "";
+	//**********************************************************************
+	var vLenguajeM1 = document.getElementById('lenguajeM1').value;
+	var vMatematicasM1 = document.getElementById('matematicasM1').value;
+	var vCienciasM1 = document.getElementById('cienciasM1').value;
+	var vSocialesM1 = document.getElementById('socialesM1').value;
+	var vInglesM1 = document.getElementById('inglesM1').value;
+	
+	var vLenguajeM2 = document.getElementById('lenguajeM2').value;
+	var vMatematicasM2 = document.getElementById('matematicasM2').value;
+	var vCienciasM2 = document.getElementById('cienciasM2').value;
+	var vSocialesM2 = document.getElementById('socialesM2').value;
+	var vInglesM2 = document.getElementById('inglesM2').value;
+	
+	var vLenguajeM3 = document.getElementById('lenguajeM3').value;
+	var vMatematicasM3 = document.getElementById('matematicasM3').value;
+	var vCienciasM3 = document.getElementById('cienciasM3').value;
+	var vSocialesM3 = document.getElementById('socialesM3').value;
+	var vInglesM3 = document.getElementById('inglesM3').value;
+	
+	var vLenguajeM4 = document.getElementById('lenguajeM4').value;
+	var vMatematicasM4 = document.getElementById('matematicasM4').value;
+	var vCienciasM4 = document.getElementById('cienciasM4').value;
+	var vSocialesM4 = document.getElementById('socialesM4').value;
+	var vInglesM4 = document.getElementById('inglesM4').value;
+	
+	var vLenguajeM5 = document.getElementById('lenguajeM5').value;
+	var vMatematicasM5 = document.getElementById('matematicasM5').value;
+	var vCienciasM5 = document.getElementById('cienciasM5').value;
+	var vSocialesM5 = document.getElementById('socialesM5').value;
+	var vInglesM5 = document.getElementById('inglesM5').value;
+	//**********************************************************************
+	vecCincoNotas = "                                                                              " + "<<<<<" + vLenguajeM1 + "<<<<<" + vMatematicasM1 + "<<<<<" + vCienciasM1 + "<<<<<" + vSocialesM1 + "<<<<<" + vInglesM1  
+																							       + "<<<<<" + vLenguajeM2 + "<<<<<" + vMatematicasM2 + "<<<<<" + vCienciasM2 + "<<<<<" + vSocialesM2 + "<<<<<" + vInglesM2 
+																								   + "<<<<<" + vLenguajeM3 + "<<<<<" + vMatematicasM3 + "<<<<<" + vCienciasM3 + "<<<<<" + vSocialesM3 + "<<<<<" + vInglesM3 
+																								   + "<<<<<" + vLenguajeM4 + "<<<<<" + vMatematicasM4 + "<<<<<" + vCienciasM4 + "<<<<<" + vSocialesM4 + "<<<<<" + vInglesM4 
+																								   + "<<<<<" + vLenguajeM5 + "<<<<<" + vMatematicasM5 + "<<<<<" + vCienciasM5 + "<<<<<" + vSocialesM5 + "<<<<<" + vInglesM5;																				
+	document.getElementById('tTemporal').value = vecCincoNotas;
+	
+																								
+}
+
+function cargarNotasComparar()
+{
+	var textNombres = document.getElementById('nombresSirai').value;
+	document.getElementById('nombres1').value = textNombres;
+}
+
+
+
+
+function resultadoCompararF()
+{
+	var niesS = document.getElementById('nies').value;
+	var nombresS = document.getElementById('nombresSirai').value;
+	var nombresCS = document.getElementById('nombresCuadros').value;
+	var lenguajeS = document.getElementById('lenguaje').value;
+	var matematicasS = document.getElementById('matematicas').value;
+	var cienciasS = document.getElementById('ciencias').value;
+	var socialesS = document.getElementById('sociales').value;
+	var inglesS = document.getElementById('ingles').value;
+	
+	var vecniesS = niesS.split("\n");
+	var vecnombresS = nombresS.split("\n");
+	var vecnombresCS = nombresCS.split("\n");
+	var veclenguajeS = lenguajeS.split("\n");
+	var vecmatematicasS = matematicasS.split("\n");
+	var veccienciasS = cienciasS.split("\n");
+	var vecsocialesS = socialesS.split("\n");
+	var vecinglesS = inglesS.split("\n");
+	
+	var tablaR = '<center><table border=1 style="text-align:center;">';
+	for(i=0;i<=vecnombresS.length-1;i++)
+	{
+		tablaR += '<tr style="text-align:center;">'+
+					  '<td width="15%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + vecniesS[i] + '</td>'+
+					  '<td width="50%" height="9px" colspan="3" style="font-family:Arial;font-size:16px;text-align:left;">' + vecnombresS[i] + '</td>'+
+					  '<td width="7%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + veclenguajeS[i] + '</td>'+
+					  '<td width="7%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + vecmatematicasS[i] + '</td>'+
+					  '<td width="7%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + veccienciasS[i] + '</td>'+
+					  '<td width="7%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + vecsocialesS[i] + '</td>'+
+					  '<td width="7%" height="9px" style="text-align:center;font-family:Arial;font-size:16px;">' + vecinglesS[i] + '</td>'+
+				   '</tr>';
+	}
+	tablaR += '</table></center>';
+	
+	document.getElementById('tdResultadoComparar').innerHTML = tablaR;
+}
+
+function activarResultado()
+{
+	document.getElementById('btnResultado').disabled=false;
+	document.getElementById('btnResultado').classList.remove('boton21');
+	document.getElementById('btnResultado').classList.add('boton2');
+}
+
+function habilitarComparar()
+{
+	document.getElementById('btnComparar').disabled=false;
+	document.getElementById('btnComparar').classList.remove('boton21k');
+	document.getElementById('btnComparar').classList.add('boton2');
+}
+function desactivarComparar()
+{
+	document.getElementById('btnComparar').disabled=true;
+	document.getElementById('btnComparar').classList.remove('boton2');
+	document.getElementById('btnComparar').classList.add('boton21k');
+}
+function activarComparar()
+{
+	var niesC = document.getElementById('nies').value;
+	var nombresC = document.getElementById('nombresSirai').value;
+	var nombresCC = document.getElementById('nombresCuadros').value;
+	var lenguajeC = document.getElementById('lenguajeM1').value;
+	var matematicasC = document.getElementById('matematicasM1').value;
+	var cienciasC = document.getElementById('cienciasM1').value;
+	var socialesC = document.getElementById('socialesM1').value;
+	var inglesC = document.getElementById('inglesM1').value;
+	
+	var vecniesS = niesC.split("\n");
+	var vecnombresS = nombresC.split("\n");
+	var vecnombresCS = nombresCC.split("\n");
+	var veclenguajeS = lenguajeC.split("\n");
+	var vecmatematicasS = matematicasC.split("\n");
+	var veccienciasS = cienciasC.split("\n");
+	var vecsocialesS = socialesC.split("\n");
+	var vecinglesS = inglesC.split("\n");
+	
+	var niesCT = vecniesS.length-1;
+	var nombresCT = vecnombresS.length-1;
+	var nombresCCT = vecnombresCS.length-1;
+	var lenguajeCT = veclenguajeS.length-1;
+	var matematicasCT = vecmatematicasS.length-1;
+	var cienciasCT = veccienciasS.length-1;
+	var socialesCT = vecsocialesS.length-1;
+	var inglesCT = vecinglesS.length-1;
+	
+	if(niesCT>0 && nombresCT>0 && nombresCCT>0 && lenguajeCT<=0 && matematicasCT<=0 && cienciasCT<=0 && socialesCT<=0 && inglesCT<=0){
+		habilitarComparar();
+	}else{
+		desactivarComparar();
+	}
+	
+}
+function activarDistribucion(){
+	var notasGen = document.getElementById('nombresCuadros').value;
+	var vecNotasGen = notasGen.split('\n');
+	var vecCero= vecNotasGen[0].split("	");
+	if(vecCero.length>1){
+		document.getElementById('mostrarDistribuir').style.display = 'block';
+	}else{
+		document.getElementById('mostrarDistribuir').style.display = 'none';
+	}
+}
+
+function distribucion(n)
+{
+	var notasGeneral = document.getElementById('nombresCuadros').value;
+	var vecNotasGeneral = notasGeneral.split('\n');
+	var vecDisNiesCuadros = [];
+	var vecDisNombresCuadros = [];
+	
+	
+	var vecDisLenguajeM1 = [];
+	var vecDisMatematicasM1 = [];
+	var vecDisCienciasM1 = [];
+	var vecDisSocialesM1 = [];
+	var vecDisInglesM1 = [];
+	
+	var vecDisLenguajeM2 = [];
+	var vecDisMatematicasM2 = [];
+	var vecDisCienciasM2 = [];
+	var vecDisSocialesM2 = [];
+	var vecDisInglesM2 = [];
+	
+	var vecDisLenguajeM3 = [];
+	var vecDisMatematicasM3 = [];
+	var vecDisCienciasM3 = [];
+	var vecDisSocialesM3 = [];
+	var vecDisInglesM3 = [];
+	
+	var vecDisLenguajeM4 = [];
+	var vecDisMatematicasM4 = [];
+	var vecDisCienciasM4 = [];
+	var vecDisSocialesM4 = [];
+	var vecDisInglesM4 = [];
+	
+	var vecDisLenguajeM5 = [];
+	var vecDisMatematicasM5 = [];
+	var vecDisCienciasM5 = [];
+	var vecDisSocialesM5 = [];
+	var vecDisInglesM5 = [];
+	
+	var pruebaExternaLenguaje=[];
+	var pruebaExternaMatematicas=[];
+	var pruebaExternaCiencias=[];
+	var pruebaExternaSociales=[];
+	
+	
+	var q=0;
+	
+	
+	for(i=0;i<=vecNotasGeneral.length-1;i++){
+		vecNotasGeneral[i]=vecNotasGeneral[i].replace(/	/g,"-");
+		
+	}
+	
+	//alert(vecNotasGeneral[0]);
+	if(n==0)
+	{
+		document.getElementById('alumnosDetectados').innerHTML=vecNotasGeneral.length-1 + " - REGISTROS<br>";
+		cuadroDialogoDistAbrir();
+	}else if(n==1)
+	{
+		cuadroDialogoDistCerrar();
+		document.getElementById('mostrarDistribuir').style.display = 'none';
+		for(i=0;i<=vecNotasGeneral.length-1;i++){
+			var vecUnidad = vecNotasGeneral[i].split("-");
+			//alert(vecUnidad.length);
+			for(k=0;k<=vecUnidad.length-1;k++){
+						if(vecUnidad[k]==""){
+							vecUnidad[k]="0.000";
+						}
+			}
+			//**************************************************************************************************************
+			if(vecUnidad.length==43)
+			{
+				for(m=0;m<=vecUnidad.length-1;m+=43){
+					
+					if(i == vecNotasGeneral.length-1){
+						vecDisNiesCuadros.push(vecUnidad[1]);
+						vecDisNombresCuadros.push(vecUnidad[2].replace(/,/g,">"));
+						
+						vecDisLenguajeM1.push(vecUnidad[3]);
+						vecDisMatematicasM1.push(vecUnidad[11]);
+						vecDisCienciasM1.push(vecUnidad[19]);
+						vecDisSocialesM1.push(vecUnidad[27]);
+						vecDisInglesM1.push(vecUnidad[35]);
+						
+						vecDisLenguajeM2.push(vecUnidad[4]);
+						vecDisMatematicasM2.push(vecUnidad[12]);
+						vecDisCienciasM2.push(vecUnidad[20]);
+						vecDisSocialesM2.push(vecUnidad[28]);
+						vecDisInglesM2.push(vecUnidad[36]);
+						
+						vecDisLenguajeM3.push(vecUnidad[5]);
+						vecDisMatematicasM3.push(vecUnidad[13]);
+						vecDisCienciasM3.push(vecUnidad[21]);
+						vecDisSocialesM3.push(vecUnidad[29]);
+						vecDisInglesM3.push(vecUnidad[37]);
+						
+						vecDisLenguajeM4.push(vecUnidad[6]);
+						vecDisMatematicasM4.push(vecUnidad[14]);
+						vecDisCienciasM4.push(vecUnidad[22]);
+						vecDisSocialesM4.push(vecUnidad[30]);
+						vecDisInglesM4.push(vecUnidad[38]);
+						
+						vecDisLenguajeM5.push(vecUnidad[7]);
+						vecDisMatematicasM5.push(vecUnidad[15]);
+						vecDisCienciasM5.push(vecUnidad[23]);
+						vecDisSocialesM5.push(vecUnidad[31]);
+						vecDisInglesM5.push(vecUnidad[39]);
+						
+						pruebaExternaLenguaje.push(vecUnidad[9]);
+						pruebaExternaMatematicas.push(vecUnidad[17]);
+						pruebaExternaCiencias.push(vecUnidad[25]);
+						pruebaExternaSociales.push(vecUnidad[33]);
+						
+					}else{
+						vecDisNiesCuadros.push(vecUnidad[1] + "\n");
+						vecDisNombresCuadros.push(vecUnidad[2].replace(/,/g,">") + "\n");
+						
+						vecDisLenguajeM1.push(vecUnidad[3] + "\n");
+						vecDisMatematicasM1.push(vecUnidad[11] + "\n");
+						vecDisCienciasM1.push(vecUnidad[19] + "\n");
+						vecDisSocialesM1.push(vecUnidad[27] + "\n");
+						vecDisInglesM1.push(vecUnidad[35] + "\n");
+						
+						vecDisLenguajeM2.push(vecUnidad[4] + "\n");
+						vecDisMatematicasM2.push(vecUnidad[12] + "\n");
+						vecDisCienciasM2.push(vecUnidad[20] + "\n");
+						vecDisSocialesM2.push(vecUnidad[28] + "\n");
+						vecDisInglesM2.push(vecUnidad[36] + "\n");
+						
+						vecDisLenguajeM3.push(vecUnidad[5] + "\n");
+						vecDisMatematicasM3.push(vecUnidad[13] + "\n");
+						vecDisCienciasM3.push(vecUnidad[21] + "\n");
+						vecDisSocialesM3.push(vecUnidad[29] + "\n");
+						vecDisInglesM3.push(vecUnidad[37] + "\n");
+						
+						vecDisLenguajeM4.push(vecUnidad[6] + "\n");
+						vecDisMatematicasM4.push(vecUnidad[14] + "\n");
+						vecDisCienciasM4.push(vecUnidad[22] + "\n");
+						vecDisSocialesM4.push(vecUnidad[30] + "\n");
+						vecDisInglesM4.push(vecUnidad[38] + "\n");
+						
+						vecDisLenguajeM5.push(vecUnidad[7] + "\n");
+						vecDisMatematicasM5.push(vecUnidad[15] + "\n");
+						vecDisCienciasM5.push(vecUnidad[23] + "\n");
+						vecDisSocialesM5.push(vecUnidad[31] + "\n");
+						vecDisInglesM5.push(vecUnidad[39] + "\n");
+						
+						pruebaExternaLenguaje.push(vecUnidad[9] + "\n");
+						pruebaExternaMatematicas.push(vecUnidad[17] + "\n");
+						pruebaExternaCiencias.push(vecUnidad[25] + "\n");
+						pruebaExternaSociales.push(vecUnidad[33] + "\n");
+					}
+					
+				}	
+				
+			}else if(vecUnidad.length==61)
+			{
+			
+				for(m=0;m<=vecUnidad.length-1;m+=61){
+					if(i == vecNotasGeneral.length-1){
+						vecDisNombresCuadros.push(vecUnidad[2].replace(/,/g,">"));
+						
+						vecDisLenguajeM1.push(vecUnidad[3]);
+						vecDisMatematicasM1.push(vecUnidad[15]);
+						vecDisCienciasM1.push(vecUnidad[27]);
+						vecDisSocialesM1.push(vecUnidad[39]);
+						vecDisInglesM1.push(vecUnidad[51]);
+						
+						vecDisLenguajeM2.push(vecUnidad[4]);
+						vecDisMatematicasM2.push(vecUnidad[16]);
+						vecDisCienciasM2.push(vecUnidad[28]);
+						vecDisSocialesM2.push(vecUnidad[40]);
+						vecDisInglesM2.push(vecUnidad[52]);
+						
+						vecDisLenguajeM3.push(vecUnidad[5]);
+						vecDisMatematicasM3.push(vecUnidad[17]);
+						vecDisCienciasM3.push(vecUnidad[29]);
+						vecDisSocialesM3.push(vecUnidad[41]);
+						vecDisInglesM3.push(vecUnidad[53]);
+						
+						vecDisLenguajeM4.push(vecUnidad[6]);
+						vecDisMatematicasM4.push(vecUnidad[18]);
+						vecDisCienciasM4.push(vecUnidad[30]);
+						vecDisSocialesM4.push(vecUnidad[42]);
+						vecDisInglesM4.push(vecUnidad[54]);
+						
+						vecDisLenguajeM5.push(vecUnidad[7]);
+						vecDisMatematicasM5.push(vecUnidad[19]);
+						vecDisCienciasM5.push(vecUnidad[31]);
+						vecDisSocialesM5.push(vecUnidad[43]);
+						vecDisInglesM5.push(vecUnidad[55]);
+						
+						pruebaExternaLenguaje.push(vecUnidad[10]);
+						pruebaExternaMatematicas.push(vecUnidad[22]);
+						pruebaExternaCiencias.push(vecUnidad[34]);
+						pruebaExternaSociales.push(vecUnidad[46]);
+						
+					}else{
+						vecDisNombresCuadros.push(vecUnidad[2].replace(/,/g,">") + "\n");
+						
+						vecDisLenguajeM1.push(vecUnidad[3] + "\n");
+						vecDisMatematicasM1.push(vecUnidad[15] + "\n");
+						vecDisCienciasM1.push(vecUnidad[27] + "\n");
+						vecDisSocialesM1.push(vecUnidad[39] + "\n");
+						vecDisInglesM1.push(vecUnidad[51] + "\n");
+						
+						vecDisLenguajeM2.push(vecUnidad[4] + "\n");
+						vecDisMatematicasM2.push(vecUnidad[16] + "\n");
+						vecDisCienciasM2.push(vecUnidad[28] + "\n");
+						vecDisSocialesM2.push(vecUnidad[40] + "\n");
+						vecDisInglesM2.push(vecUnidad[52] + "\n");
+						
+						vecDisLenguajeM3.push(vecUnidad[5] + "\n");
+						vecDisMatematicasM3.push(vecUnidad[17] + "\n");
+						vecDisCienciasM3.push(vecUnidad[29] + "\n");
+						vecDisSocialesM3.push(vecUnidad[41] + "\n");
+						vecDisInglesM3.push(vecUnidad[53] + "\n");
+						
+						vecDisLenguajeM4.push(vecUnidad[6] + "\n");
+						vecDisMatematicasM4.push(vecUnidad[18] + "\n");
+						vecDisCienciasM4.push(vecUnidad[30] + "\n");
+						vecDisSocialesM4.push(vecUnidad[42] + "\n");
+						vecDisInglesM4.push(vecUnidad[54] + "\n");
+						
+						vecDisLenguajeM5.push(vecUnidad[7] + "\n");
+						vecDisMatematicasM5.push(vecUnidad[19] + "\n");
+						vecDisCienciasM5.push(vecUnidad[31] + "\n");
+						vecDisSocialesM5.push(vecUnidad[43] + "\n");
+						vecDisInglesM5.push(vecUnidad[55] + "\n");
+						
+						pruebaExternaLenguaje.push(vecUnidad[10] + "\n");
+						pruebaExternaMatematicas.push(vecUnidad[22] + "\n");
+						pruebaExternaCiencias.push(vecUnidad[34] + "\n");
+						pruebaExternaSociales.push(vecUnidad[46] + "\n");
+					}
+				}
+			
+		}else if(vecUnidad.length!=61 && vecUnidad.length!=43 && vecUnidad.length!=1)
+			{
+				q=1;
+				//alert(vecUnidad.length); 
+				document.getElementById("nombresCuadros").readOnly  = false;
+			}
+	}
+	if(q==1){
+		alert("Datos seleccionados de forma incorrecta.\nSeleccione del cuadro institucional, \nunicamente los registros que tengan nombre \ndel estudiante")
+		document.getElementById("nombresCuadros").readOnly  = false;
+	}
+		
+		
+		document.getElementById('niesPE').value=vecDisNiesCuadros;
+		document.getElementById('nombresCuadros').value=vecDisNombresCuadros;	
+		
+		document.getElementById('lenguajeM1').value=vecDisLenguajeM1;
+		document.getElementById('matematicasM1').value=vecDisMatematicasM1;
+		document.getElementById('cienciasM1').value=vecDisCienciasM1;
+		document.getElementById('socialesM1').value=vecDisSocialesM1;
+		document.getElementById('inglesM1').value=vecDisInglesM1;
+		
+		document.getElementById('lenguajeM2').value=vecDisLenguajeM2;
+		document.getElementById('matematicasM2').value=vecDisMatematicasM2;
+		document.getElementById('cienciasM2').value=vecDisCienciasM2;
+		document.getElementById('socialesM2').value=vecDisSocialesM2;
+		document.getElementById('inglesM2').value=vecDisInglesM2;
+		
+		document.getElementById('lenguajeM3').value=vecDisLenguajeM3;
+		document.getElementById('matematicasM3').value=vecDisMatematicasM3;
+		document.getElementById('cienciasM3').value=vecDisCienciasM3;
+		document.getElementById('socialesM3').value=vecDisSocialesM3;
+		document.getElementById('inglesM3').value=vecDisInglesM3;
+		
+		document.getElementById('lenguajeM4').value=vecDisLenguajeM4;
+		document.getElementById('matematicasM4').value=vecDisMatematicasM4;
+		document.getElementById('cienciasM4').value=vecDisCienciasM4;
+		document.getElementById('socialesM4').value=vecDisSocialesM4;
+		document.getElementById('inglesM4').value=vecDisInglesM4;
+		
+		document.getElementById('lenguajeM5').value=vecDisLenguajeM5;
+		document.getElementById('matematicasM5').value=vecDisMatematicasM5;
+		document.getElementById('cienciasM5').value=vecDisCienciasM5;
+		document.getElementById('socialesM5').value=vecDisSocialesM5;
+		document.getElementById('inglesM5').value=vecDisInglesM5;
+		
+		document.getElementById('lenguajePE').value=pruebaExternaLenguaje;
+		document.getElementById('matematicasPE').value=pruebaExternaMatematicas;
+		document.getElementById('cienciasPE').value=pruebaExternaCiencias;
+		document.getElementById('socialesPE').value=pruebaExternaSociales;
+		
+		
+
+		var vecDisNiesCuadros1 = document.getElementById('niesPE').value;
+		var vecDisNombresCuadros1 = document.getElementById('nombresCuadros').value;
+		
+		var vecDisLenguaje1M1 = document.getElementById('lenguajeM1').value;
+		var vecDisMatematicas1M1 = document.getElementById('matematicasM1').value;
+		var vecDisCiencias1M1 = document.getElementById('cienciasM1').value;
+		var vecDisSociales1M1 = document.getElementById('socialesM1').value;
+		var vecDisIngles1M1 = document.getElementById('inglesM1').value;
+		
+		var vecDisLenguaje1M2 = document.getElementById('lenguajeM2').value;
+		var vecDisMatematicas1M2 = document.getElementById('matematicasM2').value;
+		var vecDisCiencias1M2 = document.getElementById('cienciasM2').value;
+		var vecDisSociales1M2 = document.getElementById('socialesM2').value;
+		var vecDisIngles1M2 = document.getElementById('inglesM2').value;
+		
+		var vecDisLenguaje1M3 = document.getElementById('lenguajeM3').value;
+		var vecDisMatematicas1M3 = document.getElementById('matematicasM3').value;
+		var vecDisCiencias1M3 = document.getElementById('cienciasM3').value;
+		var vecDisSociales1M3 = document.getElementById('socialesM3').value;
+		var vecDisIngles1M3 = document.getElementById('inglesM3').value;
+		
+		var vecDisLenguaje1M4 = document.getElementById('lenguajeM4').value;
+		var vecDisMatematicas1M4 = document.getElementById('matematicasM4').value;
+		var vecDisCiencias1M4 = document.getElementById('cienciasM4').value;
+		var vecDisSociales1M4 = document.getElementById('socialesM4').value;
+		var vecDisIngles1M4 = document.getElementById('inglesM4').value;
+		
+		var vecDisLenguaje1M5 = document.getElementById('lenguajeM5').value;
+		var vecDisMatematicas1M5 = document.getElementById('matematicasM5').value;
+		var vecDisCiencias1M5 = document.getElementById('cienciasM5').value;
+		var vecDisSociales1M5 = document.getElementById('socialesM5').value;
+		var vecDisIngles1M5 = document.getElementById('inglesM5').value;
+		
+		var vecDisLenguaje1PE = document.getElementById('lenguajePE').value;
+		var vecDisMatematicas1PE = document.getElementById('matematicasPE').value;
+		var vecDisCiencias1PE = document.getElementById('cienciasPE').value;
+		var vecDisSociales1PE = document.getElementById('socialesPE').value;
+			
+		vecDisNiesCuadros1= vecDisNiesCuadros1.replace(/,/g,"");
+		
+		vecDisNombresCuadros1 = vecDisNombresCuadros1.replace(/,/g,"");
+		vecDisNombresCuadros1 = vecDisNombresCuadros1.replace(/>/g,",");
+		
+		
+		vecDisLenguaje1M1 = vecDisLenguaje1M1.replace(/,/g,"");
+		vecDisMatematicas1M1 = vecDisMatematicas1M1.replace(/,/g,"");
+		vecDisCiencias1M1 = vecDisCiencias1M1.replace(/,/g,"");
+		vecDisSociales1M1 = vecDisSociales1M1.replace(/,/g,"");
+		vecDisIngles1M1 = vecDisIngles1M1.replace(/,/g,"");
+		
+		vecDisLenguaje1M2 = vecDisLenguaje1M2.replace(/,/g,"");
+		vecDisMatematicas1M2 = vecDisMatematicas1M2.replace(/,/g,"");
+		vecDisCiencias1M2 = vecDisCiencias1M2.replace(/,/g,"");
+		vecDisSociales1M2 = vecDisSociales1M2.replace(/,/g,"");
+		vecDisIngles1M2 = vecDisIngles1M2.replace(/,/g,"");
+		
+		vecDisLenguaje1M3 = vecDisLenguaje1M3.replace(/,/g,"");
+		vecDisMatematicas1M3 = vecDisMatematicas1M3.replace(/,/g,"");
+		vecDisCiencias1M3 = vecDisCiencias1M3.replace(/,/g,"");
+		vecDisSociales1M3 = vecDisSociales1M3.replace(/,/g,"");
+		vecDisIngles1M3 = vecDisIngles1M3.replace(/,/g,"");
+		
+		vecDisLenguaje1M4 = vecDisLenguaje1M4.replace(/,/g,"");
+		vecDisMatematicas1M4 = vecDisMatematicas1M4.replace(/,/g,"");
+		vecDisCiencias1M4 = vecDisCiencias1M4.replace(/,/g,"");
+		vecDisSociales1M4 = vecDisSociales1M4.replace(/,/g,"");
+		vecDisIngles1M4 = vecDisIngles1M4.replace(/,/g,"");
+		
+		vecDisLenguaje1M5 = vecDisLenguaje1M5.replace(/,/g,"");
+		vecDisMatematicas1M5 = vecDisMatematicas1M5.replace(/,/g,"");
+		vecDisCiencias1M5 = vecDisCiencias1M5.replace(/,/g,"");
+		vecDisSociales1M5 = vecDisSociales1M5.replace(/,/g,"");
+		vecDisIngles1M5 = vecDisIngles1M5.replace(/,/g,"");
+		
+		vecDisLenguaje1PE = vecDisLenguaje1PE.replace(/,/g,"");
+		vecDisMatematicas1PE = vecDisMatematicas1PE.replace(/,/g,"");
+		vecDisCiencias1PE = vecDisCiencias1PE.replace(/,/g,"");
+		vecDisSociales1PE = vecDisSociales1PE.replace(/,/g,"");
+		
+		document.getElementById('niesPE').value=vecDisNiesCuadros1;
+		document.getElementById('nombresCuadros').value=vecDisNombresCuadros1;
+		
+		document.getElementById('lenguajeM1').value=vecDisLenguaje1M1;
+		document.getElementById('matematicasM1').value=vecDisMatematicas1M1;
+		document.getElementById('cienciasM1').value=vecDisCiencias1M1;
+		document.getElementById('socialesM1').value=vecDisSociales1M1;
+		document.getElementById('inglesM1').value=vecDisIngles1M1;
+		
+		document.getElementById('lenguajeM2').value=vecDisLenguaje1M2;
+		document.getElementById('matematicasM2').value=vecDisMatematicas1M2;
+		document.getElementById('cienciasM2').value=vecDisCiencias1M2;
+		document.getElementById('socialesM2').value=vecDisSociales1M2;
+		document.getElementById('inglesM2').value=vecDisIngles1M2;
+		
+		document.getElementById('lenguajeM3').value=vecDisLenguaje1M3;
+		document.getElementById('matematicasM3').value=vecDisMatematicas1M3;
+		document.getElementById('cienciasM3').value=vecDisCiencias1M3;
+		document.getElementById('socialesM3').value=vecDisSociales1M3;
+		document.getElementById('inglesM3').value=vecDisIngles1M3;
+		
+		document.getElementById('lenguajeM4').value=vecDisLenguaje1M4;
+		document.getElementById('matematicasM4').value=vecDisMatematicas1M4;
+		document.getElementById('cienciasM4').value=vecDisCiencias1M4;
+		document.getElementById('socialesM4').value=vecDisSociales1M4;
+		document.getElementById('inglesM4').value=vecDisIngles1M4;
+		
+		document.getElementById('lenguajeM5').value=vecDisLenguaje1M5;
+		document.getElementById('matematicasM5').value=vecDisMatematicas1M5;
+		document.getElementById('cienciasM5').value=vecDisCiencias1M5;
+		document.getElementById('socialesM5').value=vecDisSociales1M5;
+		document.getElementById('inglesM5').value=vecDisIngles1M5;
+		
+		document.getElementById('lenguajePE').value=vecDisLenguaje1PE;
+		document.getElementById('matematicasPE').value=vecDisMatematicas1PE;
+		document.getElementById('cienciasPE').value=vecDisCiencias1PE;
+		document.getElementById('socialesPE').value=vecDisSociales1PE;
+		
+		calcularDatos();
+		document.getElementById('mostrarDistribuir').style.display = 'none';
+	}
+	
+	//document.getElementById("nombresSirai").readOnly  = true;
+	
+	if(q==0){
+		document.getElementById("nombresCuadros").readOnly  = true;
+	}
+}
+
+function divHeads(dH){
+	if(dH=='A'){
+		document.getElementById('headInstitucional').style.display = 'block';
+		document.getElementById('headPromocion').style.display = 'none';
+		document.getElementById('headCertificados').style.display = 'none';
+		
+		document.getElementById('dci').classList.remove('boton4PeqDes');
+		document.getElementById('dcp').classList.remove('boton4Peq');
+		document.getElementById('dcer').classList.remove('boton4Peq');
+		
+		document.getElementById('dci').classList.add('boton4Peq');
+		document.getElementById('dcp').classList.add('boton4PeqDes');
+		document.getElementById('dcer').classList.add('boton4PeqDes');
+		
+	}
+	if(dH=='B'){
+		document.getElementById('headInstitucional').style.display = 'none';
+		document.getElementById('headPromocion').style.display = 'block';
+		document.getElementById('headCertificados').style.display = 'none';
+		
+		document.getElementById('dci').classList.remove('boton4Peq');
+		document.getElementById('dcp').classList.remove('boton4PeqDes');
+		document.getElementById('dcer').classList.remove('boton4Peq');
+		
+		document.getElementById('dci').classList.add('boton4PeqDes');
+		document.getElementById('dcp').classList.add('boton4Peq');
+		document.getElementById('dcer').classList.add('boton4PeqDes');
+	}
+	if(dH=='C'){
+		document.getElementById('headInstitucional').style.display = 'none';
+		document.getElementById('headPromocion').style.display = 'none';
+		document.getElementById('headCertificados').style.display = 'block';
+		
+		document.getElementById('dci').classList.remove('boton4Peq');
+		document.getElementById('dcp').classList.remove('boton4Peq');
+		document.getElementById('dcer').classList.remove('boton4PeqDes');
+		
+		document.getElementById('dci').classList.add('boton4PeqDes');
+		document.getElementById('dcp').classList.add('boton4PeqDes');
+		document.getElementById('dcer').classList.add('boton4Peq');
+	}
+}
+
+function divs(div){
+	if(div==1){
+		document.getElementById('divM1').style.display = 'block';
+		document.getElementById('divM2').style.display = 'none';
+		document.getElementById('divM3').style.display = 'none';
+		document.getElementById('divM4').style.display = 'none';
+		document.getElementById('divM5').style.display = 'none';
+		
+		document.getElementById('bM1').classList.remove('boton2mm');
+		document.getElementById('bM2').classList.remove('boton2mm');
+		document.getElementById('bM3').classList.remove('boton2mm');
+		document.getElementById('bM4').classList.remove('boton2mm');
+		document.getElementById('bM5').classList.remove('boton2mm');
+		
+		document.getElementById('bM1').classList.add('boton2mm');
+		document.getElementById('bM2').classList.add('boton2m');
+		document.getElementById('bM3').classList.add('boton2m');
+		document.getElementById('bM4').classList.add('boton2m');
+		document.getElementById('bM5').classList.add('boton2m');
+		
+		//******************************************
+		document.getElementById('llM1').style.display = 'block';
+		document.getElementById('LMM1').style.display = 'block';
+		document.getElementById('LCM1').style.display = 'block';
+		document.getElementById('LSM1').style.display = 'block';
+		document.getElementById('LIM1').style.display = 'block';
+		
+		document.getElementById('llM2').style.display = 'none';
+		document.getElementById('LMM2').style.display = 'none';
+		document.getElementById('LCM2').style.display = 'none';
+		document.getElementById('LSM2').style.display = 'none';
+		document.getElementById('LIM2').style.display = 'none';
+		
+		document.getElementById('llM3').style.display = 'none';
+		document.getElementById('LMM3').style.display = 'none';
+		document.getElementById('LCM3').style.display = 'none';
+		document.getElementById('LSM3').style.display = 'none';
+		document.getElementById('LIM3').style.display = 'none';
+		
+		document.getElementById('llM4').style.display = 'none';
+		document.getElementById('LMM4').style.display = 'none';
+		document.getElementById('LCM4').style.display = 'none';
+		document.getElementById('LSM4').style.display = 'none';
+		document.getElementById('LIM4').style.display = 'none';
+		
+		document.getElementById('llM5').style.display = 'none';
+		document.getElementById('LMM5').style.display = 'none';
+		document.getElementById('LCM5').style.display = 'none';
+		document.getElementById('LSM5').style.display = 'none';
+		document.getElementById('LIM5').style.display = 'none';
+		//**********************************************
+	}else if(div==2){
+		document.getElementById('divM1').style.display = 'none';
+		document.getElementById('divM2').style.display = 'block';
+		document.getElementById('divM3').style.display = 'none';
+		document.getElementById('divM4').style.display = 'none';
+		document.getElementById('divM5').style.display = 'none';	
+		
+		document.getElementById('bM1').classList.remove('boton2mm');
+		document.getElementById('bM2').classList.remove('boton2mm');
+		document.getElementById('bM3').classList.remove('boton2mm');
+		document.getElementById('bM4').classList.remove('boton2mm');
+		document.getElementById('bM5').classList.remove('boton2mm');
+		
+		document.getElementById('bM1').classList.add('boton2m');
+		document.getElementById('bM2').classList.add('boton2mm');
+		document.getElementById('bM3').classList.add('boton2m');
+		document.getElementById('bM4').classList.add('boton2m');
+		document.getElementById('bM5').classList.add('boton2m');
+		
+		//******************************************
+		document.getElementById('llM1').style.display = 'none';
+		document.getElementById('LMM1').style.display = 'none';
+		document.getElementById('LCM1').style.display = 'none';
+		document.getElementById('LSM1').style.display = 'none';
+		document.getElementById('LIM1').style.display = 'none';
+		
+		document.getElementById('llM2').style.display = 'block';
+		document.getElementById('LMM2').style.display = 'block';
+		document.getElementById('LCM2').style.display = 'block';
+		document.getElementById('LSM2').style.display = 'block';
+		document.getElementById('LIM2').style.display = 'block';
+		
+		document.getElementById('llM3').style.display = 'none';
+		document.getElementById('LMM3').style.display = 'none';
+		document.getElementById('LCM3').style.display = 'none';
+		document.getElementById('LSM3').style.display = 'none';
+		document.getElementById('LIM3').style.display = 'none';
+		
+		document.getElementById('llM4').style.display = 'none';
+		document.getElementById('LMM4').style.display = 'none';
+		document.getElementById('LCM4').style.display = 'none';
+		document.getElementById('LSM4').style.display = 'none';
+		document.getElementById('LIM4').style.display = 'none';
+		
+		document.getElementById('llM5').style.display = 'none';
+		document.getElementById('LMM5').style.display = 'none';
+		document.getElementById('LCM5').style.display = 'none';
+		document.getElementById('LSM5').style.display = 'none';
+		document.getElementById('LIM5').style.display = 'none';
+		//**********************************************
+	}else if(div==3){
+		document.getElementById('divM1').style.display = 'none';
+		document.getElementById('divM2').style.display = 'none';
+		document.getElementById('divM3').style.display = 'block';
+		document.getElementById('divM4').style.display = 'none';
+		document.getElementById('divM5').style.display = 'none';
+
+		document.getElementById('bM1').classList.remove('boton2mm');
+		document.getElementById('bM2').classList.remove('boton2mm');
+		document.getElementById('bM3').classList.remove('boton2mm');
+		document.getElementById('bM4').classList.remove('boton2mm');
+		document.getElementById('bM5').classList.remove('boton2mm');
+		
+		document.getElementById('bM1').classList.add('boton2m');
+		document.getElementById('bM2').classList.add('boton2m');
+		document.getElementById('bM3').classList.add('boton2mm');
+		document.getElementById('bM4').classList.add('boton2m');
+		document.getElementById('bM5').classList.add('boton2m');
+
+		//******************************************
+		document.getElementById('llM1').style.display = 'none';
+		document.getElementById('LMM1').style.display = 'none';
+		document.getElementById('LCM1').style.display = 'none';
+		document.getElementById('LSM1').style.display = 'none';
+		document.getElementById('LIM1').style.display = 'none';
+		
+		document.getElementById('llM2').style.display = 'none';
+		document.getElementById('LMM2').style.display = 'none';
+		document.getElementById('LCM2').style.display = 'none';
+		document.getElementById('LSM2').style.display = 'none';
+		document.getElementById('LIM2').style.display = 'none';
+		
+		document.getElementById('llM3').style.display = 'block';
+		document.getElementById('LMM3').style.display = 'block';
+		document.getElementById('LCM3').style.display = 'block';
+		document.getElementById('LSM3').style.display = 'block';
+		document.getElementById('LIM3').style.display = 'block';
+		
+		document.getElementById('llM4').style.display = 'none';
+		document.getElementById('LMM4').style.display = 'none';
+		document.getElementById('LCM4').style.display = 'none';
+		document.getElementById('LSM4').style.display = 'none';
+		document.getElementById('LIM4').style.display = 'none';
+		
+		document.getElementById('llM5').style.display = 'none';
+		document.getElementById('LMM5').style.display = 'none';
+		document.getElementById('LCM5').style.display = 'none';
+		document.getElementById('LSM5').style.display = 'none';
+		document.getElementById('LIM5').style.display = 'none';
+		//**********************************************		
+	}else if(div==4){
+		document.getElementById('divM1').style.display = 'none';
+		document.getElementById('divM2').style.display = 'none';
+		document.getElementById('divM3').style.display = 'none';
+		document.getElementById('divM4').style.display = 'block';
+		document.getElementById('divM5').style.display = 'none';
+
+		document.getElementById('bM1').classList.remove('boton2mm');
+		document.getElementById('bM2').classList.remove('boton2mm');
+		document.getElementById('bM3').classList.remove('boton2mm');
+		document.getElementById('bM4').classList.remove('boton2mm');
+		document.getElementById('bM5').classList.remove('boton2mm');
+		
+		document.getElementById('bM1').classList.add('boton2m');
+		document.getElementById('bM2').classList.add('boton2m');
+		document.getElementById('bM3').classList.add('boton2m');
+		document.getElementById('bM4').classList.add('boton2mm');
+		document.getElementById('bM5').classList.add('boton2m');
+		
+		//******************************************
+		document.getElementById('llM1').style.display = 'none';
+		document.getElementById('LMM1').style.display = 'none';
+		document.getElementById('LCM1').style.display = 'none';
+		document.getElementById('LSM1').style.display = 'none';
+		document.getElementById('LIM1').style.display = 'none';
+		
+		document.getElementById('llM2').style.display = 'none';
+		document.getElementById('LMM2').style.display = 'none';
+		document.getElementById('LCM2').style.display = 'none';
+		document.getElementById('LSM2').style.display = 'none';
+		document.getElementById('LIM2').style.display = 'none';
+		
+		document.getElementById('llM3').style.display = 'none';
+		document.getElementById('LMM3').style.display = 'none';
+		document.getElementById('LCM3').style.display = 'none';
+		document.getElementById('LSM3').style.display = 'none';
+		document.getElementById('LIM3').style.display = 'none';
+		
+		document.getElementById('llM4').style.display = 'block';
+		document.getElementById('LMM4').style.display = 'block';
+		document.getElementById('LCM4').style.display = 'block';
+		document.getElementById('LSM4').style.display = 'block';
+		document.getElementById('LIM4').style.display = 'block';
+		
+		document.getElementById('llM5').style.display = 'none';
+		document.getElementById('LMM5').style.display = 'none';
+		document.getElementById('LCM5').style.display = 'none';
+		document.getElementById('LSM5').style.display = 'none';
+		document.getElementById('LIM5').style.display = 'none';
+		//**********************************************
+	}else if(div==5){
+		document.getElementById('divM1').style.display = 'none';
+		document.getElementById('divM2').style.display = 'none';
+		document.getElementById('divM3').style.display = 'none';
+		document.getElementById('divM4').style.display = 'none';
+		document.getElementById('divM5').style.display = 'block';
+
+		document.getElementById('bM1').classList.remove('boton2mm');
+		document.getElementById('bM2').classList.remove('boton2mm');
+		document.getElementById('bM3').classList.remove('boton2mm');
+		document.getElementById('bM4').classList.remove('boton2mm');
+		document.getElementById('bM5').classList.remove('boton2mm');
+		
+		document.getElementById('bM1').classList.add('boton2m');
+		document.getElementById('bM2').classList.add('boton2m');
+		document.getElementById('bM3').classList.add('boton2m');
+		document.getElementById('bM4').classList.add('boton2m');
+		document.getElementById('bM5').classList.add('boton2mm');
+		
+		//******************************************
+		document.getElementById('llM1').style.display = 'none';
+		document.getElementById('LMM1').style.display = 'none';
+		document.getElementById('LCM1').style.display = 'none';
+		document.getElementById('LSM1').style.display = 'none';
+		document.getElementById('LIM1').style.display = 'none';
+		
+		document.getElementById('llM2').style.display = 'none';
+		document.getElementById('LMM2').style.display = 'none';
+		document.getElementById('LCM2').style.display = 'none';
+		document.getElementById('LSM2').style.display = 'none';
+		document.getElementById('LIM2').style.display = 'none';
+		
+		document.getElementById('llM3').style.display = 'none';
+		document.getElementById('LMM3').style.display = 'none';
+		document.getElementById('LCM3').style.display = 'none';
+		document.getElementById('LSM3').style.display = 'none';
+		document.getElementById('LIM3').style.display = 'none';
+		
+		document.getElementById('llM4').style.display = 'none';
+		document.getElementById('LMM4').style.display = 'none';
+		document.getElementById('LCM4').style.display = 'none';
+		document.getElementById('LSM4').style.display = 'none';
+		document.getElementById('LIM4').style.display = 'none';
+		
+		document.getElementById('llM5').style.display = 'block';
+		document.getElementById('LMM5').style.display = 'block';
+		document.getElementById('LCM5').style.display = 'block';
+		document.getElementById('LSM5').style.display = 'block';
+		document.getElementById('LIM5').style.display = 'block';
+		//**********************************************
+	}
+	
+}
+
+function activarCuadrosPC(){
+/*
+	var lenguajePE = localStorage.getItem("lenguajeVecLPE");
+	var vecPELenguaje = JSON.parse(lenguajePE);
+	var matematicasePE = localStorage.getItem("matematicasVecLPE");
+	var vecPEMatematicas = JSON.parse(matematicasePE);
+	var cienciasPE = localStorage.getItem("cienciasVecLPE");
+	var vecPECiencias = JSON.parse(cienciasPE);
+	var socialesPE = localStorage.getItem("socialesVecLPE");
+	var vecPESociales = JSON.parse(socialesPE);
+	
+	*/
+	
+	var lenguajeExtraerP = document.getElementById('lenguajePE').value;
+	var vecPELenguaje = lenguajeExtraerP.split("\n");
+	//alert(vecPELenguaje);
+	var matematicasExtraerP = document.getElementById('matematicasPE').value;
+	var vecPEMatematicas = matematicasExtraerP.split("\n");
+	
+	var cienciasExtraerP = document.getElementById('cienciasPE').value;
+	var vecPECiencias = cienciasExtraerP.split("\n");
+	
+	var socialesExtraerP = document.getElementById('socialesPE').value;
+	var vecPESociales = socialesExtraerP.split("\n");
+	
+	var w=0;
+	if(vecPELenguaje.length>2 && vecPEMatematicas.length>2 && vecPECiencias.length>2 && vecPESociales.length>2){
+		for(i=0;i<=vecPELenguaje.length-2;i++){
+			if(vecPELenguaje[i]==0.000){
+				w=1;
+				//alert(vecPELenguaje[36]);
+			}
+			if(vecPEMatematicas[i]==0.000){
+				w=1;
+				//alert("2");
+			}
+			if(vecPECiencias[i]==0.000){
+				w=1;
+				//alert("3");
+			}
+			if(vecPESociales[i]==0.000){
+				w=1;
+				//alert("4");
+			}
+			
+			
+			
+			/*
+			if(vecPELenguaje[i]>0 && vecPEMatematicas[i]>0 && vecPECiencias[i]>0 && vecPESociales[i]>0){
+				document.getElementById('dcp').disabled=false;
+				document.getElementById('dcer').disabled=false;
+			}
+			*/
+		}
+		if(w==1){
+			//alert("No puede generar los cuadros de promocion y la base de datos para imprimir certificados.\nAlumnos sin notas de Prueba Externa")
+			document.getElementById("dcp").title="No puede generar los cuadros de promocion y la base de datos para imprimir certificados.\nAlumnos sin notas de Prueba Externa";
+			document.getElementById("dcer").title="No puede generar los cuadros de promocion y la base de datos para imprimir certificados.\nAlumnos sin notas de Prueba Externa";
+			
+		}
+		if(w==0){
+				document.getElementById('dcp').disabled=false;
+				document.getElementById('dcer').disabled=false;
+			}
+	}
+	/*
+	disabled = false;
+	alert(vecPELenguaje.length);
+	alert(vecPEMatematicas.length);
+	alert(vecPECiencias.length);
+	alert(vecPESociales.length);
+	*/
+}
+
+//Funcion para mover los scroll de las textArea al mismo tiempo
+function moverScroll(c){
+	var scrollMadre=document.getElementById(c.id);
+	
+	var sNies=document.getElementById("nies");
+	var sNombreSirai=document.getElementById("nombresSirai");
+	var sNombresCuadros=document.getElementById("nombresCuadros");
+	
+	var sLenguaje1=document.getElementById("lenguajeM1");
+	var sMatematicas1=document.getElementById("matematicasM1");
+	var sCiencias1=document.getElementById("cienciasM1");
+	var sSociales1=document.getElementById("socialesM1");
+	var sIngles1=document.getElementById("inglesM1");
+	
+	var sLenguaje2=document.getElementById("lenguajeM2");
+	var sMatematicas2=document.getElementById("matematicasM2");
+	var sCiencias2=document.getElementById("cienciasM2");
+	var sSociales2=document.getElementById("socialesM2");
+	var sIngles2=document.getElementById("inglesM2");
+	
+	var sLenguaje3=document.getElementById("lenguajeM3");
+	var sMatematicas3=document.getElementById("matematicasM3");
+	var sCiencias3=document.getElementById("cienciasM3");
+	var sSociales3=document.getElementById("socialesM3");
+	var sIngles3=document.getElementById("inglesM3");
+	
+	var sLenguaje4=document.getElementById("lenguajeM4");
+	var sMatematicas4=document.getElementById("matematicasM4");
+	var sCiencias4=document.getElementById("cienciasM4");
+	var sSociales4=document.getElementById("socialesM4");
+	var sIngles4=document.getElementById("inglesM4");
+	
+	var sLenguaje5=document.getElementById("lenguajeM5");
+	var sMatematicas5=document.getElementById("matematicasM5");
+	var sCiencias5=document.getElementById("cienciasM5");
+	var sSociales5=document.getElementById("socialesM5");
+	var sIngles5=document.getElementById("inglesM5");
+	
+	
+	
+	var xNS=scrollMadre.scrollTop;
+	
+	sNies.scrollTop=xNS;
+	sNombreSirai.scrollTop=xNS;
+	sNombresCuadros.scrollTop=xNS;
+	
+	sLenguaje1.scrollTop=xNS;
+	sMatematicas1.scrollTop=xNS;
+	sCiencias1.scrollTop=xNS;
+	sSociales1.scrollTop=xNS;
+	sIngles1.scrollTop=xNS;
+	
+	sLenguaje2.scrollTop=xNS;
+	sMatematicas2.scrollTop=xNS;
+	sCiencias2.scrollTop=xNS;
+	sSociales2.scrollTop=xNS;
+	sIngles2.scrollTop=xNS;
+	
+	sLenguaje3.scrollTop=xNS;
+	sMatematicas3.scrollTop=xNS;
+	sCiencias3.scrollTop=xNS;
+	sSociales3.scrollTop=xNS;
+	sIngles3.scrollTop=xNS;
+	
+	sLenguaje4.scrollTop=xNS;
+	sMatematicas4.scrollTop=xNS;
+	sCiencias4.scrollTop=xNS;
+	sSociales4.scrollTop=xNS;
+	sIngles4.scrollTop=xNS;
+	
+	sLenguaje5.scrollTop=xNS;
+	sMatematicas5.scrollTop=xNS;
+	sCiencias5.scrollTop=xNS;
+	sSociales5.scrollTop=xNS;
+	sIngles5.scrollTop=xNS;
+	
+	
+	
+	
+}
+//Funcion que determina si los datos que se extraen del cuadro institucional
+//son correctos, es decir si todos los alumnos tienen notas de prueba externa y si las 
+//notas estan en el rango de 0 a 10
+function analisisDeDatos(){
+	var ansNombresCuadros = document.getElementById('nombresCuadros').value;
+
+	var ansLenguajeM1 = document.getElementById('lenguajeM1').value;
+	var ansMatematicasM1 = document.getElementById('matematicasM1').value;
+	var ansCienciasM1 = document.getElementById('cienciasM1').value;
+	var ansSocialesM1 = document.getElementById('socialesM1').value;
+	var ansInglesM1 = document.getElementById('inglesM1').value;
+	
+	var ansLenguajeM2 = document.getElementById('lenguajeM2').value;
+	var ansMatematicasM2 = document.getElementById('matematicasM2').value;
+	var ansCienciasM2 = document.getElementById('cienciasM2').value;
+	var ansSocialesM2 = document.getElementById('socialesM2').value;
+	var ansInglesM2 = document.getElementById('inglesM2').value;
+	
+	var ansLenguajeM3 = document.getElementById('lenguajeM3').value;
+	var ansMatematicasM3 = document.getElementById('matematicasM3').value;
+	var ansCienciasM3 = document.getElementById('cienciasM3').value;
+	var ansSocialesM3 = document.getElementById('socialesM3').value;
+	var ansInglesM3 = document.getElementById('inglesM3').value;
+	
+	var ansLenguajeM4 = document.getElementById('lenguajeM4').value;
+	var ansMatematicasM4 = document.getElementById('matematicasM4').value;
+	var ansCienciasM4 = document.getElementById('cienciasM4').value;
+	var ansSocialesM4 = document.getElementById('socialesM4').value;
+	var ansInglesM4 = document.getElementById('inglesM4').value;
+	
+	var ansLenguajeM5 = document.getElementById('lenguajeM5').value;
+	var ansMatematicasM5 = document.getElementById('matematicasM5').value;
+	var ansCienciasM5 = document.getElementById('cienciasM5').value;
+	var ansSocialesM5 = document.getElementById('socialesM5').value;
+	var ansInglesM5 = document.getElementById('inglesM5').value;
+	
+	var ansLenguajePE = document.getElementById('lenguajePE').value;
+	var ansMatematicasPE = document.getElementById('matematicasPE').value;
+	var ansCienciasPE = document.getElementById('cienciasPE').value;
+	var ansSocialesPE = document.getElementById('socialesPE').value;
+	
+	//Convertir las cadenas a vectores
+	
+	var vecAnsNombresCuadros = ansNombresCuadros.split("\n");
+	
+	var vecAnsLenguajeM1 = ansLenguajeM1.split("\n");
+	var vecAnsMatematicasM1 = ansMatematicasM1.split("\n");
+	var vecAnsCienciasM1 = ansCienciasM1.split("\n");
+	var vecAnsSocialesM1 = ansSocialesM1.split("\n");
+	var vecAnsInglesM1 = ansInglesM1.split("\n");
+	
+	var vecAnsLenguajeM2 = ansLenguajeM2.split("\n");
+	var vecAnsMatematicasM2 = ansMatematicasM2.split("\n");
+	var vecAnsCienciasM2 = ansCienciasM2.split("\n");
+	var vecAnsSocialesM2 = ansSocialesM2.split("\n");
+	var vecAnsInglesM2 = ansInglesM2.split("\n");
+	
+	var vecAnsLenguajeM3 = ansLenguajeM3.split("\n");
+	var vecAnsMatematicasM3 = ansMatematicasM3.split("\n");
+	var vecAnsCienciasM3 = ansCienciasM3.split("\n");
+	var vecAnsSocialesM3 = ansSocialesM3.split("\n");
+	var vecAnsInglesM3 = ansInglesM3.split("\n");
+	
+	var vecAnsLenguajeM4 = ansLenguajeM4.split("\n");
+	var vecAnsMatematicasM4 = ansMatematicasM4.split("\n");
+	var vecAnsCienciasM4 = ansCienciasM4.split("\n");
+	var vecAnsSocialesM4 = ansSocialesM4.split("\n");
+	var vecAnsInglesM4 = ansInglesM4.split("\n");
+	
+	var vecAnsLenguajeM5 = ansLenguajeM5.split("\n");
+	var vecAnsMatematicasM5 = ansMatematicasM5.split("\n");
+	var vecAnsCienciasM5 = ansCienciasM5.split("\n");
+	var vecAnsSocialesM5 = ansSocialesM5.split("\n");
+	var vecAnsInglesM5 = ansInglesM5.split("\n");
+	
+	var vecAnsLenguajePE = ansLenguajePE.split("\n");
+	var vecAnsMatematicasPE = ansMatematicasPE.split("\n");
+	var vecAnsCienciasPE = ansCienciasPE.split("\n");
+	var vecAnsSocialesPE = ansSocialesPE.split("\n");
+	
+	var k=0;
+	for(i=0;i<=vecAnsNombresCuadros.length-1;i++){
+		
+		if(vecAnsLenguajeM1[i]<0.000 || vecAnsLenguajeM1[i]>10.0 || isNaN(vecAnsLenguajeM1[i])){
+			k=1;			
+		}
+		if(vecAnsLenguajeM2[i]<0.000 || vecAnsLenguajeM2[i]>10.0 || isNaN(vecAnsLenguajeM2[i])){
+			k=1;	
+		}
+		if(vecAnsLenguajeM3[i]<0.000 || vecAnsLenguajeM3[i]>10.0 || isNaN(vecAnsLenguajeM3[i])){
+			k=1;			
+		}
+		if(vecAnsLenguajeM4[i]<0.000 || vecAnsLenguajeM4[i]>10.0 || isNaN(vecAnsLenguajeM4[i])){
+			k=1;			
+		}
+		if(vecAnsLenguajeM5[i]<0.000 || vecAnsLenguajeM5[i]>10.0 || isNaN(vecAnsLenguajeM5[i])){
+			k=1;			
+		}
+		
+		
+		if(vecAnsMatematicasM1[i]<0.000 || vecAnsMatematicasM1[i]>10.0 || isNaN(vecAnsMatematicasM1[i])){
+			k=1;			
+		}
+		if(vecAnsMatematicasM2[i]<0.000 || vecAnsMatematicasM2[i]>10.0 || isNaN(vecAnsMatematicasM2[i])){
+			k=1;	
+		}
+		if(vecAnsMatematicasM3[i]<0.000 || vecAnsMatematicasM3[i]>10.0 || isNaN(vecAnsMatematicasM3[i])){
+			k=1;			
+		}
+		if(vecAnsMatematicasM4[i]<0.000 || vecAnsMatematicasM4[i]>10.0 || isNaN(vecAnsMatematicasM4[i])){
+			k=1;			
+		}
+		if(vecAnsMatematicasM5[i]<0.000 || vecAnsMatematicasM5[i]>10.0 || isNaN(vecAnsMatematicasM5[i])){
+			k=1;			
+		}
+		
+	
+		if(vecAnsCienciasM1[i]<0.000 || vecAnsCienciasM1[i]>10.0 || isNaN(vecAnsCienciasM1[i])){
+			k=1;			
+		}
+		if(vecAnsCienciasM2[i]<0.000 || vecAnsCienciasM2[i]>10.0 || isNaN(vecAnsCienciasM2[i])){
+			k=1;	
+		}
+		if(vecAnsCienciasM3[i]<0.000 || vecAnsCienciasM3[i]>10.0 || isNaN(vecAnsCienciasM3[i])){
+			k=1;			
+		}
+		if(vecAnsCienciasM4[i]<0.000 || vecAnsCienciasM4[i]>10.0 || isNaN(vecAnsCienciasM4[i])){
+			k=1;			
+		}
+		if(vecAnsCienciasM5[i]<0.000 || vecAnsCienciasM5[i]>10.0 || isNaN(vecAnsCienciasM5[i])){
+			k=1;			
+		}
+		
+		
+		if(vecAnsSocialesM1[i]<0.000 || vecAnsSocialesM1[i]>10.0 || isNaN(vecAnsSocialesM1[i])){
+			k=1;			
+		}
+		if(vecAnsSocialesM2[i]<0.000 || vecAnsSocialesM2[i]>10.0 || isNaN(vecAnsSocialesM2[i])){
+			k=1;	
+		}
+		if(vecAnsSocialesM3[i]<0.000 || vecAnsSocialesM3[i]>10.0 || isNaN(vecAnsSocialesM3[i])){
+			k=1;			
+		}
+		if(vecAnsSocialesM4[i]<0.000 || vecAnsSocialesM4[i]>10.0 || isNaN(vecAnsSocialesM4[i])){
+			k=1;			
+		}
+		if(vecAnsSocialesM5[i]<0.000 || vecAnsSocialesM5[i]>10.0 || isNaN(vecAnsSocialesM5[i])){
+			k=1;			
+		}
+		
+		if(vecAnsInglesM1[i]<0.000 || vecAnsSocialesM1[i]>10.0 || isNaN(vecAnsInglesM1[i])){
+			k=1;			
+		}
+		if(vecAnsInglesM2[i]<0.000 || vecAnsInglesM2[i]>10.0 || isNaN(vecAnsInglesM2[i])){
+			k=1;	
+		}
+		if(vecAnsInglesM3[i]<0.000 || vecAnsInglesM3[i]>10.0 || isNaN(vecAnsInglesM3[i])){
+			k=1;			
+		}
+		if(vecAnsInglesM4[i]<0.000 || vecAnsInglesM4[i]>10.0 || isNaN(vecAnsInglesM4[i])){
+			k=1;			
+		}
+		if(vecAnsInglesM5[i]<0.000 || vecAnsInglesM5[i]>10.0 || isNaN(vecAnsInglesM5[i])){
+			k=1;			
+		}
+		
+		if(vecAnsLenguajePE[i]<0.000 || vecAnsLenguajePE[i]>10.0 || isNaN(vecAnsLenguajePE[i])){
+			k=1;			
+		}
+		if(vecAnsMatematicasPE[i]<0.000 || vecAnsMatematicasPE[i]>10.0 || isNaN(vecAnsMatematicasPE[i])){
+			k=1;	
+		}
+		if(vecAnsCienciasPE[i]<0.000 || vecAnsCienciasPE[i]>10.0 || isNaN(vecAnsCienciasPE[i])){
+			k=1;			
+		}
+		if(vecAnsSocialesPE[i]<0.000 || vecAnsSocialesPE[i]>10.0 || isNaN(vecAnsSocialesPE[i])){
+			k=1;			
+		}
+		
+		
+	}
+	
+	if(k==1){
+		alert("Alumnos con notas fuera del rango (de 0 a 10), o celdas que no contienen numeros.\nRevisar cuadro institucional.\nDebe comenzar el proceso nuevamente.");
+	}
+	
+}
+
+function compaPunto(){
+	var estado = document.getElementById('comaPuntosCh');
+	var grado=document.getElementById("eb11").value;
+	
+	if(estado.checked==true){
+		if(grado==6  || grado==7 || grado==8 || grado==9 || grado=='1 A&NtildeO DE BACHILLERATO'){
+			window.open('CuadroComas.html');
+		}else if(grado=='2 A&NtildeO DE BACHILLERATO'){
+			window.open('CuadroComas2.html');
+		}
+	}else if(estado.checked==false){
+		if(grado==6  || grado==7 || grado==8 || grado==9 || grado=='1 A&NtildeO DE BACHILLERATO'){
+			window.open('Cuadro.html');
+		}else if(grado=='2 A&NtildeO DE BACHILLERATO'){
+			window.open('Cuadro2.html');
+		}
+		
+	}
+	
+}
+
+</script>
+
+</head>
+<body>
+<center>
+<div style='display:block;' id='tablaProceso1' border=1>
+
+<table  border=0 id="tabla0" cellspacing=0 cellpadding=2 bordercolor="3B0B17" width="83%">
+<tr>
+	<td colspan="3">
+	<center>
+		<input type="button" value="RECARGAR" class='boton22Otro' onclick="location.href='Proceso.html'">
+		<input type="button" value="INICIO" class='boton22Otro' onclick="location.href='../Inicio.html'">
+		<input type="button" value="Mejorar Texto -- (1)" class='boton21' onclick="analisisDeDatos();quitarComas();ar('0');" disabled=true id="botonMejorarTexto">
+		<img src="Imagenes/flecha1.png" id="img1">
+		<input type="button" value="Ordenar -- (2)" class='boton21' onclick="ordenar();" disabled=true id="botonOrdenar">
+		<img src="Imagenes/flecha1.png" id="img2">
+		<input type="button" value="Transformar -- (3)" class='boton21' onclick="transformar();" id="botonTransformar" disabled=true>
+		<img src="Imagenes/flecha1.png" id="img3">
+		<input type="button" value="GENERAR" class='boton22' onclick="encabezado();activarCuadrosPC();" id="botonGenerar" >
+		
+	</center>
+	</td>
+	
+</tr>
+<tr>
+	<td>
+		
+	</td>
+</tr>
+<tr>
+	<td>
+		<br>
+	</td>	
+</tr>
+
+</table>
+<table border=1 id="tabla1" cellspacing=0 cellpadding=2 bordercolor="3B0B17" style="border-radius:20px;border: 3px solid #3B0B17;">
+	
+	<tr>
+		<td style = "border-radius: 16px 0px 0px 0px;">
+			<!-- <center><input type="button" id='btnComparar' value="COMPARAR" class='boton21k' onclick="abrirModal('modalComparar');noEncontradosAlComparar();" disabled="true" title="Presione cuando necesite comparar una seccion de los sistemas SAE/SIRAI con algun cuadro de promocion"></center> -->
+		</td>
+		<td>
+		<center><input type="button" value="CARGAR DATOS PROCESADOS" class='boton2' ondblclick="cargarHeadPersistencia();calcularDatos();" title="Presione para cargar la ultima seccion procesada"></center>
+		</td>
+		<td>
+		<center>
+			<input type="button" value="LIMPIAR TODO" class='boton2' onclick="limpiarTodo();">
+		</center>
+		</td>
+		<td  colspan="5" style = "border-radius: 0px 16px 0px 0px;"><center><input disabled=true type="button" value="COPIAR NOTAS" class='boton211' onclick="mandarNotas();copiarTexto('tTemporal','c1');"  id="c1"></center></td>
+	</tr>
+	<tr>
+		<td>
+
+			
+		</td>
+		<td>
+			<!-- <center><input type="button" value="LIMPIAR" class='boton2' onclick="limpiarTextA('nombresSirai');limpiarTextA('nies');desactivarComparar();"></center> -->
+		</td>
+		<td>
+			<center><input type="button" id="mostrarDistribuir" value="DISTRIBUIR" class='boton2' style="display:none;" onclick="distribucion('0');"></center>
+		</td>
+		
+		<td>
+			<center>
+				<input type="button" value="MODULO 1" class='boton2mm' onclick="divs('1')" id="bM1">
+			</center>
+		</td>
+		<td>
+			<center>
+				<input type="button" value="MODULO 2" class='boton2m' onclick="divs('2')" id="bM2">
+			</center>
+		</td>
+		<td>
+			<center>
+				<input type="button" value="MODULO 3" class='boton2m' onclick="divs('3')" id="bM3">
+			</center>
+		</td>
+		<td>
+			<center>
+				<input type="button" value="MODULO 4" class='boton2m' onclick="divs('4')" id="bM4">
+			</center>
+		</td>
+		<td>
+			<center>
+				<input type="button" value="MODULO 5" class='boton2m' onclick="divs('5')" id="bM5">
+			</center>
+		</td>
+		
+	</tr>
+	<tr>
+		<td class='text2'><center>NIE</center></td>
+		<td class='text2'>
+			<center>
+			
+			<span style="color:#FFFFFF;">  -----  </span>Nombres<span style="color:#FFFFFF;">  ----  </span>
+			
+			</center>
+		</td>
+		<td class='text2' id="Textto"><center>Nombres de cuadros de notas</center></td>
+		<td class='text2'><center>Lenguaje</center></td>
+		<td class='text2'><center>Mate...</center></td>
+		<td class='text2'><center>Ciencias</center></td>
+		<td class='text2'><center>Sociales</center></td>
+		<td class='text2'><center>Ingl&eacutes</center></td>
+	</tr>
+	<tr>
+		<td><textarea rows="18" cols="11" class=estilotextarea id="nies" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();pegadoEspecialnomSirai();" onKeyUp="calcularDatos();pegadoEspecialnomSirai();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+		<td><textarea rows="18" cols="43" class=estilotextarea id="nombresSirai" onscroll="moverScroll(this);" onKeyDown="calcularDatos();pegadoEspecialnomSirai();" onKeyUp="calcularDatos();pegadoEspecialnomSirai();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+		<td><textarea rows="18" cols="43" class=estilotextarea id="nombresCuadros" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event);"></textarea></td>
+		<td colspan="5">	
+			<div id="divM1" style='display:block;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border:1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajeM1" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasM1" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasM1" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();activarComparar();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesM1" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="inglesM1" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="divM2" style='display:none;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border: 1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajeM2" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasM2" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasM2" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesM2" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="inglesM2" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="divM3" style='display:none;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border: 1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajeM3" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasM3" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasM3" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesM3" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="inglesM3" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="divM4" style='display:none;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border: 1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajeM4" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasM4" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasM4" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesM4" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="inglesM4" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div id="divM5" style='display:none;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border: 1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajeM5" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasM5" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasM5" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesM5" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="inglesM5" readonly="readonly" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+		
+			<div id="divPEM5" style='display:none;'>
+				<table border="1" id="tabla1" cellspacing=0 cellpadding=1 bordercolor="3B0B17" style="border: 1px solid #3B0B17;" >
+					<tr>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="lenguajePE" onscroll="moverScroll(this);" onKeyDown="activarDistribucion();calcularDatos();" onKeyUp="activarDistribucion();calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="matematicasPE" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="cienciasPE" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="socialesPE" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+						<td><textarea rows="18" cols="8" class=estilotextarea id="niesPE" onscroll="moverScroll(this);" onKeyDown="calcularDatos();" onKeyUp="calcularDatos();" onkeyPress="return noEnter(this.value, event)"></textarea></td>
+					</tr>
+				</table>
+			</div>
+			
+			
+			
+		</td>
+	</tr>
+	
+	<tr>
+		<td><input type="checkbox" id='habilitarN' value="1" onclick="habilitarNies();">Habilitar</td>
+		<td>
+			<textarea style="display:none;" rows="1" cols="43" readonly="readonly" class=estilotextarea id="tTemporal" onkeyPress="return noEnter(this.value, event)"></textarea>
+			<center>
+			<table border = 0 HEIGHT=100% WIDTH=100%>
+				<tr HEIGHT=100% WIDTH=100%>
+					<!--<td align="right" HEIGHT=100% WIDTH=15%><input type="checkbox" id='habilitarSeccionesMas' value="1" onclick="cosasDeSecciones();"></td>
+					 <td align="left" id="mostrarSecciones" HEIGHT=100% WIDTH=40%>Mostrar Secciones</td> -->
+					<td HEIGHT=100% WIDTH=15%><input type="button" value="1" class='boton2k' ondblclick="seccionesVarias('1');calcularDatos();" style="display:none;" id="btnUno" title="Presione para cargar la seccion 1"></td>
+					<td HEIGHT=100% WIDTH=15%><input type="button" value="2" class='boton2k' ondblclick="seccionesVarias('2');calcularDatos();" style="display:none;" id="btnDos" title="Presione para cargar la seccion 2"></td>
+					<td HEIGHT=100% WIDTH=15%><input type="button" value="3" class='boton2k' ondblclick="seccionesVarias('3');calcularDatos();" style="display:none;" id="btnTres" title="Presione para cargar la seccion 3"></td>
+				</tr>
+			</table>
+			</center>
+		
+		</td>
+		<td>
+			<center>
+				<!--
+				<input type="button" value="GUARDAR DATOS" class='boton2' onclick="cuadroDialogo1Abrir();">
+				<input type="button" value="CARGAR DATOS" class='boton2' onclick="cuadroDialogo2Abrir();">
+				-->
+			</center>
+		</td>
+		<td><!--<center><input type="button" value="CEROS" class='boton2' onclick="ceros('matematicas');"></center>--></td>
+		<td><!--<center><input type="button" value="CEROS" class='boton2' onclick="ceros('ciencias');"></center>--></td>
+		<td><!--<center><input type="button" value="CEROS" class='boton2' onclick="ceros('sociales');"></center>--></td>
+		<td></td>
+		<td><!-- <td><center><input type="button" value="CEROS" class='boton2' onclick="ceros('ingles');"></center></td> --></td>
+	</tr>
+	<tr>
+		<td style = "border-radius: 0px 0px 0px 16px;"><p id="labelNiesSirai" class='text2'>0</p></td>
+		<td>
+			<p id="labelNombresSirai" class='text2'>Total: 0</p>
+			<center>
+			<input type="button" onclick="limpiarTextA('nombresSirai');limpiarTextA('nies');" id="beb1" class='botonimagen'>
+			</center>
+		</td>
+		<td>
+			<p id="labelNombresCuadros" class='text2'>Total: 0</p>
+			<center>
+			<input type="button" onclick="limpiarTextA('nombresCuadros');" id="beb1" class='botonimagen'>
+			</center>
+		</td>
+		<td>
+			<p id="labelLenguaje" class='text2'>Total: 0</p>
+			<center>
+				<input type="button" style="display:block;" onclick="limpiarTa('lenguajeM1','labelLenguaje');" id="llM1" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('lenguajeM2','labelLenguaje');" id="llM2" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('lenguajeM3','labelLenguaje');" id="llM3" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('lenguajeM4','labelLenguaje');" id="llM4" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('lenguajeM5','labelLenguaje');" id="llM5" class='botonimagen'>
+			</center>
+		</td>
+		<td>
+			<p id="labelMatematicas" class='text2'>Total: 0</p>
+			<center>
+				<input type="button" style="display:block;" onclick="limpiarTa('matematicasM1','labelMatematicas');" id="LMM1" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('matematicasM2','labelMatematicas');" id="LMM2" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('matematicasM3','labelMatematicas');" id="LMM3" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('matematicasM4','labelMatematicas');" id="LMM4" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('matematicasM5','labelMatematicas');" id="LMM5" class='botonimagen'>
+				
+				
+			</center>		
+		</td>
+		<td>
+			<p id="labelCiencias" class='text2'>Total: 0</p>
+			<center>
+				<input type="button" style="display:block;" onclick="limpiarTa('cienciasM1','labelCiencias');" id="LCM1" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('cienciasM2','labelCiencias');" id="LCM2" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('cienciasM3','labelCiencias');" id="LCM3" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('cienciasM4','labelCiencias');" id="LCM4" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('cienciasM5','labelCiencias');" id="LCM5" class='botonimagen'>
+			</center>	
+		</td>
+		<td>
+			<p id="labelSociales" class='text2'>Total: 0</p>
+			<center>
+				<input type="button" style="display:block;" onclick="limpiarTa('socialesM1','labelSociales');" id="LSM1" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('socialesM2','labelSociales');" id="LSM2" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('socialesM3','labelSociales');" id="LSM3" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('socialesM4','labelSociales');" id="LSM4" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('socialesM5','labelSociales');" id="LSM5" class='botonimagen'>
+			</center>	
+		</td>
+		<td style = "border-radius: 0px 0px 16px 0px;">
+			<p id="labelIngles" class='text2'>Total: 0</p>
+			<center>
+				<input type="button" style="display:block;" onclick="limpiarTa('inglesM1','labelIngles');" id="LIM1" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('inglesM2','labelIngles');" id="LIM2" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('inglesM3','labelIngles');" id="LIM3" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('inglesM4','labelIngles');" id="LIM4" class='botonimagen'>
+				<input type="button" style="display:none;" onclick="limpiarTa('inglesM5','labelIngles');" id="LIM5" class='botonimagen'>
+			</center>	
+		</td>
+	</tr>
+	
+</table>
+
+
+<table border="1" style='display:none;'>
+	<tr>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nies1"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nombresSirai1"></textarea></td>
+		
+		
+		
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nies2"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nombresSirai2"></textarea></td>
+		
+		
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nies3"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nombresSirai3"></textarea></td>
+		
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nies0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nombresSirai0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="nombresCuadros0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="lenguaje0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="matematicas0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="ciencias0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="sociales0"></textarea></td>
+		<td><textarea rows="1" readonly="readonly" cols="1" class=estilotextarea id="ingles0"></textarea></td>
+		
+	</tr>
+
+	<tr>
+		
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fNombresC"></textarea></td>
+		
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fLenguaje1C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fLenguaje2C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fLenguaje3C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fLenguaje4C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fLenguaje5C"></textarea></td>
+		<td>---</td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fPruebaExCL"></textarea></td>
+	</tr>
+	<tr>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fMatematicas1C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fMatematicas2C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fMatematicas3C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fMatematicas4C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fMatematicas5C"></textarea></td>
+		<td>---</td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fPruebaExCM"></textarea></td>
+	</tr>
+	<tr>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fCiencias1C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fCiencias2C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fCiencias3C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fCiencias4C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fCiencias5C"></textarea></td>
+		<td>---</td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fPruebaExCC"></textarea></td>
+	</tr>
+	<tr>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fSociales1C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fSociales2C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fSociales3C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fSociales4C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fSociales5C"></textarea></td>
+		<td>---</td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fPruebaExCS"></textarea></td>
+	</tr>
+	<tr>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fIngles1C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fIngles2C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fIngles3C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fIngles4C"></textarea></td>
+		<td><textarea rows="10" readonly="readonly" cols="10" class=estilotextarea id="fIngles5C"></textarea></td>
+		<td>---</td>
+		
+	</tr>
+</table>
+
+
+</div>
+</center>
+
+<div id="openModal" class="modalbg" >
+  <div class="dialog" style="overflow:scroll; max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		<input type="button" value="TERMINAR" onclick="cerrarModal('openModal');calcularDatos();" id="cerrar" class='boton4'> 
+		<center>
+		<table border="1" HEIGHT=400px WIDTH=800px>
+			<tr>
+				<td id='nada' rowspan="1" HEIGHT=5% WIDTH=50%></td>
+				<td id='campoCero'  valign="top" HEIGHT=5% WIDTH=50% align="center"></td>
+			</tr>
+			<tr>
+				<td id='sola' rowspan="1" HEIGHT=10% WIDTH=50% class='text1'> --  NOMBRES NO ENCONTRADOS</td>
+				<td id='tablaBusqueda'  valign="top" HEIGHT=10% WIDTH=50%></td>
+			</tr>
+			
+			<tr>
+				<td id='tablas' rowspan="1" HEIGHT=100% WIDTH=40% botder=0 valign="top"></td>
+				<td id='tablaResultado' HEIGHT=100% WIDTH=40% botder=0 valign="top"></td>
+			</tr>	
+		</table>		
+		</center>
+	</div>
+</div>
+
+
+<div id="encabezadoBasica" class="modalbg1" >
+  <div class="dialog" style="max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		
+		<center>
+		<table border="0" HEIGHT=100% WIDTH=100% bordercolor="3B0B17" cellspacing=0 cellpadding=1>
+			
+			<tr>
+				<td>
+					<center>
+					<input type="button" value="CUADRO INSTITUCIONAL" onclick="divHeads('A');" id="dci" class='boton4Peq'> 
+					<input type="button" value="CUADRO DE PROMOCION" onclick="divHeads('B');" id="dcp" class='boton4PeqDes' disabled> 
+					<input type="button" value="CERTIFICADOS" onclick="divHeads('C');" id="dcer" class='boton4PeqDes' disabled> 
+					<input type="button" value="X" onclick="cerrarModelHead('encabezadoBasica');" id="dcer" class='boton4PeqClose'>
+					</center>
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<!-- /*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*/ -->
+						<div id="headInstitucional" style="display:block">
+							<table>
+									<tr>
+										<br>
+										<center>
+											<font face="lucida calligraphy">ENCABEZADO DE CUADRO INSTITUCIONAL</font><br>
+											__________________________________________________________
+										</center>
+										
+									</tr>
+									<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SELECCIONE DEPARTAMENTO:</td>
+										<td class='text3'>
+											<select id="departamentoCuadro" onChange="departamentoMunicipioCuadro('0');">
+												<option value="" selected="true" disabled>SELECCIONE DEPARTAMENTO...</option>
+												<option value="0-AHUACHAPAN">AHUACHAPAN</option>
+												<option value="1-SAN SALVADOR">SAN SALVADOR</option>
+												<option value="2-CUSCATLAN">CUSCATLAN</option>
+												<option value="3-LA PAZ">LA PAZ</option>
+												<option value="4-LA LIBERTAD">LA LIBERTAD</option>
+												<option value="5-SAN VICENTE">SAN VICENTE</option>
+												<option value="6-SAN MIGUEL">SAN MIGUEL</option>												
+											</select>
+											
+											<input type="button" id="epab2" class='botonimagen1' onclick="CcargarPorDefectoInstitucional();" title="Presione para cargar valores">
+										</td>
+									</tr>
+									<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SEDE:</td>
+										<td >
+											<select id="municipioCuadro" onChange="sedeMunicipioSelec('0');"> 
+											<option value="" selected="true" disabled>S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;</option>
+											</select>
+										</td>
+									</tr>
+									
+									<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>GRADO </td>
+										<td class='text3'>
+											<select id='eb11' onclick="cargarGradoCuadrosInstitucional();">
+													  <option value="" selected="true" disabled>...</option>
+													  <option value="6">6</option>
+													  <option value="7">7</option>
+													  <option value="8">8</option>
+													  <option value="9">9</option>
+													  <option value="1 A&NtildeO DE BACHILLERATO">1 A&ntildeo</option>
+													  <option value="2 A&NtildeO DE BACHILLERATO">2 A&ntildeo</option>
+											</select>
+										
+										SECCION: 
+										<textarea rows="1" cols="8" class=estilotextarea id="eb9"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb9');" id="beb1" class='botonimagen'></textarea></td>
+									
+									</tr>
+									<tr>
+										<td class='text4'>IMPLEMENTADORA: </td>
+										<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="eb2"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb2');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>DEPARTAMENTO: </td>
+										<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="eb3"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb3');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>SEDE: </td>
+										<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="eb4"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb4');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>MUNICIPIO: </td>
+										<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="eb5"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb5');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>MODALIDAD: </td>
+										<td class='text3'><textarea rows="1" cols="15" class=estilotextarea id="eb6"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb6');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>A&NtildeO LECTIVO: </td>
+										<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="eb7"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb7');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>NOMBRE SEDE: </td>
+										<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="eb8"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb8');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									<tr>
+										<td class='text4'>HORARIO DE ATENCION: </td>
+										<td class='text3'>
+											<textarea rows="1" cols="20" class=estilotextarea id="eb10"></textarea>
+										...<input type="button" onclick="limpiarTextA('eb10');" id="beb1" class='botonimagen'></textarea></td>
+									</tr>
+									
+									<tr>
+										<td colspan="1">
+										<br>
+											<center>
+											<input type="checkbox" id='comaPuntosCh' value="1" title="Marque para generar un cuadro que utilice la coma como separador decimal en vez de un punto">Decimales con comas
+		
+											</center>
+										</td>
+										<td colspan="1">
+											<br>
+											<center>
+											<!--
+											<input type="button" value="GUARDAR" onclick="guardarHeadInstitucional();" id="cerrar1" class='boton5'> 
+											
+											<input type="button" value="CARGAR" onclick="cargarHeadInstitucional();" id="cerrar2" class='boton5'> 
+											-->
+											<input type="button" value="GENERAR" onclick="generarCuadroProm('1'); cargarHeadPersistenciaINI();compaPunto();" id="load1" class='boton5'> 
+											
+											
+											
+											<!--<input type="button" value="ASIGNAR GENERO" onclick="cambiarAsignarGenero('1');editarGenerosTabla();asignarGenerosAbrir();" id="cerrar3" class='boton5'> -->
+											</center>
+										</td>
+									</tr>
+							</table>
+						
+						</div>
+					<!-- /*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*/ -->
+						<div id="headPromocion" style="display:none">
+									<table border="0" HEIGHT=100% WIDTH=100% bordercolor="3B0B17" cellspacing=0 cellpadding=1>
+			
+											<tr>
+												<br>
+												<center>
+													<font face="lucida calligraphy">ENCABEZADO DE CUADRO DE PROMOCION</font><br>
+													__________________________________________________________
+												</center>
+												
+											</tr>
+											<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SELECCIONE DEPARTAMENTO:</td>
+										<td class='text3'>
+											<select id="departamentoPromocion" onChange="departamentoMunicipioCuadro('1');">
+												<option value="" selected="true" disabled>SELECCIONE DEPARTAMENTO...</option>
+												<option value="0-AHUACHAPAN">AHUACHAPAN</option>
+												<option value="1-SAN SALVADOR">SAN SALVADOR</option>
+												<option value="2-CUSCATLAN">CUSCATLAN</option>
+												<option value="3-LA PAZ">LA PAZ</option>
+												<option value="4-LA LIBERTAD">LA LIBERTAD</option>
+												<option value="5-SAN VICENTE">SAN VICENTE</option>
+												<option value="6-SAN MIGUEL">SAN MIGUEL</option>												
+											</select>
+											
+											<input type="button" id="epab2" class='botonimagen1' onclick="cargarPorDefectoPromocion();" title="Presione para cargar valores">
+										</td>
+									</tr>
+									<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SEDE:</td>
+										<td >
+											<select id="municipioPromocion" onChange="sedeMunicipioSelec('1');"> 
+											<option value="" selected="true" disabled>S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;</option>
+											</select>
+										</td>
+									</tr>
+											
+											<tr>
+												<td class='text4' HEIGHT=50% WIDTH=50%>GRADO: </td>
+												<td class='text3'>
+												<select id='peb1' onclick="cargarGradoPromocion();">
+														  <option value="" selected="true" disabled>...</option>
+														  <option value="6">6</option>
+														  <option value="7">7</option>
+														  <option value="8">8</option>
+														  <option value="9">9</option>
+														  <option value="1 AÑO">1 A&NtildeO</option>
+														  <option value="2 AÑO">2 A&NtildeO</option>
+														  
+												</select>
+												
+												SECCI&OacuteN: 
+												<textarea rows="1" cols="2" class=estilotextarea id="peb2"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb2');" id="beb1" class='botonimagen'></textarea></td>
+																						
+											</tr>
+											
+											<tr>
+												<td class='text4'>C&OacuteDIGO DEL CENTRO ESCOLAR: </td>
+												<td class='text3'><textarea rows="1" cols="10" class=estilotextarea id="peb3"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb3');" id="beb1" class='botonimagen'></textarea>
+											</tr>
+											
+											<tr>
+												<td class='text4'>NOMBRE DEL CENTRO EDUCATIVO: </td>
+												<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="peb4"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb4');" id="beb1" class='botonimagen'></textarea></td>
+											</tr>
+											<tr>
+												<td class='text4'>C&OacuteDIGO DE SEDE:  </td>
+												<td class='text3'><textarea rows="1" cols="9" class=estilotextarea id="peb5"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb5');" id="beb1" class='botonimagen'></textarea></td>
+											</tr>
+											<tr>
+												<td class='text4'>NOMBRE DE SEDE ED&UacuteCAME: </td>
+												<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="peb6"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb6');" id="beb1" class='botonimagen'></textarea></td>
+											</tr>
+										
+											<tr>
+												<td class='text4'>DIRECCI&OacuteN:</td>
+												<td class='text3'><textarea rows="2" cols="23" class=estilotextarea id="peb7"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb7');" id="beb1" class='botonimagen'></textarea></td>
+											</tr>
+											<tr>
+												<td class='text4'>MUNICIPIO:</td>
+												<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="peb8"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb8');" id="beb1" class='botonimagen'></textarea></td>			
+											</tr>
+											<tr>
+												<td class='text4'>DEPARTAMENTO:</td>
+												<td class='text3'><textarea rows="1" cols="22" class=estilotextarea id="peb9"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb9');" id="beb1" class='botonimagen'></textarea></td>			
+											</tr>
+											<tr>
+												<td class='text4'>N DE ACUERDO DE CREACI&OacuteN: </td>
+												<td class='text3'><textarea rows="1" cols="13" class=estilotextarea id="peb10"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb10');" id="beb1" class='botonimagen'></textarea></td>			
+											</tr>
+											<tr>
+												<td class='text4'>DE FECHA: </td>
+												<td class='text3'><textarea rows="1" cols="10" class=estilotextarea id="peb11"></textarea>
+												...<input type="button" onclick="limpiarTextA('peb11');" id="beb1" class='botonimagen'></textarea></td>			
+											</tr>
+											
+											<tr>
+														
+											</tr>
+											<tr>
+												<td colspan="2">
+													<center>
+													<!--
+													<input type="button" value="GUARDAR" onclick="guardarHeadBasica();" id="cerrar1" class='boton5Otro'> 
+													<input type="button" value="CARGAR" onclick="cargarHeadBasica();" id="cerrar2" class='boton5Otro'> 
+													<input type="button" value="ASIGNAR GENERO" onclick="editarGenerosTabla();asignarGenerosAbrir();" id="cerrar3" class='boton5Otro'> -->
+													<input type="button" value="GENERAR" onclick="generarCuadroProm('2'); window.open('Promocion.html');" id="cerrar3" class='boton5Otro'> 
+													
+													</center>
+												</td>			
+											</tr>
+										</table>																			
+						</div>
+					<!-- /*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*//*/ -->
+						<div id="headCertificados" style="display:none">
+								<table border="0" HEIGHT=100% WIDTH=100% bordercolor="3B0B17" cellspacing=0 cellpadding=1>
+										<tr>
+												<br>
+												<center>
+													<font face="lucida calligraphy">ENCABEZADO DE BASE DE CERTIFICADOS</font><br>
+													__________________________________________________________
+												</center>
+												<br>
+											</tr>
+										
+										
+										<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SELECCIONE DEPARTAMENTO:</td>
+										<td class='text3'>
+											<select id="departamentoCertificados" onChange="departamentoMunicipioCuadro('2');">
+												<option value="" selected="true" disabled>SELECCIONE DEPARTAMENTO...</option>
+												<option value="0-AHUACHAPAN">AHUACHAPAN</option>
+												<option value="1-SAN SALVADOR">SAN SALVADOR</option>
+												<option value="2-CUSCATLAN">CUSCATLAN</option>
+												<option value="3-LA PAZ">LA PAZ</option>
+												<option value="4-LA LIBERTAD">LA LIBERTAD</option>
+												<option value="5-SAN VICENTE">SAN VICENTE</option>
+												<option value="6-SAN MIGUEL">SAN MIGUEL</option>												
+											</select>
+											
+											
+										</td>
+									</tr>
+									<tr>
+										<td class='text4' HEIGHT=50% WIDTH=50%>SEDE:</td>
+										<td >
+											<select id="municipioCertificados" onChange="sedeMunicipioSelec('2');"> 
+											<option value="" selected="true" disabled>S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;L&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;I&nbsp;&nbsp;&nbsp;O&nbsp;&nbsp;&nbsp;N&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; S&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;E&nbsp;&nbsp;&nbsp;</option>
+											</select>
+										</td>
+									</tr>
+										<tr>
+											<td class='text4'>SEDE:  </td>
+											<td class='text3'><textarea rows="1" cols="20" class=estilotextarea id="cer1"></textarea>
+											...<input type="button" onclick="limpiarTextA('cer1');" id="cerb1" class='botonimagen'> </td>
+										</tr>
+										<tr>
+											<td class='text4'>MUNICIPIO:  </td>
+											<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="cer4"></textarea>
+											...<input type="button" onclick="limpiarTextA('cer4');" id="cerb2" class='botonimagen'> </td>
+										</tr>
+										<tr>
+											<td class='text4'>GRADO:</td>
+											<td class='text3'>
+												<select id='cer2'>
+													  <option value="" selected="true" disabled>...</option>
+													 
+													  <option value="6">6</option>
+													  <option value="7">7</option>
+													  <option value="8">8</option>
+													  <option value="9">9</option>
+													  <option value="1 AÑO">1 A&NtildeO</option>
+													  <option value="2 AÑO">2 A&NtildeO</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td class='text4'>SECCI&OacuteN: </td>
+											<td class='text3'><textarea rows="1" cols="5" class=estilotextarea id="cer3"></textarea>
+											...<input type="button" onclick="limpiarTextA('cer3');" id="cerb4" class='botonimagen'>
+											</td>			
+										</tr>
+										
+										<tr>
+											<td class='text4'>NOMBRE DEL DIRECTOR:</td>
+											<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="cer5"></textarea>
+											...<input type="button" onclick="limpiarTextA('cer5');" id="cerb5" class='botonimagen'>
+											</td>			
+										</tr>
+										
+										<tr>
+											<td class='text4'></td>
+											<td class='text3'></td>			
+										</tr>
+										<tr>
+											<td class='text4'></td>
+											<td class='text3'></td>			
+										</tr>
+										
+										<tr>
+										<td colspan="2">
+											<center>
+											<br><br><br><br>
+											<input type="button" value="GENERAR" onclick="generarCuadroProm('4');window.open('certificados.html');" id="load1" class='boton5'> 
+										
+											</center>
+										</td>			
+									</tr>
+													
+									</table>
+						</div>
+				<td>
+			</tr>
+		</table>		
+		</center>
+	</div>
+</div>
+
+<div id="encabezadoPrimerAnio" class="modalbg1" >
+  <div class="dialog" style=" max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		<input type="button" value="COMPLETAR" onclick="enviarEncabezado();cerrarModal('encabezadoPrimerAnio');generarCuadroProm();" id="cerrar1" class='boton4'> 
+		<center>
+		<table border="0" HEIGHT=100% WIDTH=100% bordercolor="3B0B17" cellspacing=0 cellpadding=1>
+			<tr>
+				<td class='text4' >.................................................................</td>
+				<td class='text3'> .................................................................</td>
+			</tr>
+			<tr>
+				<td class='text4' >.......................................</td>
+				<td class='text3'> .......................................</td>
+			</tr>
+			
+			<tr>
+				<td class='text4' HEIGHT=50% WIDTH=50%>SELECCIONE MUNICIPIO:</td>
+				<td class='text3'>
+					<select id='municipio' onChange="cargarDatosMunicipioBach();">
+						  <option value="" selected="true" disabled>SELECCIONE MUNICIPIO...</option>
+						  <option value="E0391-AHUACHAPÁN-AHUACHAPÁN">AHUACHAPAN</option>
+						  <option value="E0392-CABAÑAS-ILOBASCO">ILOBASCO</option>
+						  <option value="E0393-CUSCATLAN-COJUTEPEQUE">COJUTEPEQUE</option>
+						  <option value="E0394-CUSCATLAN-SAN PEDRO PERULAPÁN">SAN PEDRO PERULAPAN</option>
+						  <option value="E0395-LA LIBERTAD-COLÓN">COLÓN</option>
+						  <option value="E0396-LA LIBERTAD-QUEZALTEPEQUE">QUZALTEPEQUE</option>
+						  <option value="E0397-LA LIBERTAD-SAN JUAN OPICO">SAN JUAN OPICO</option>
+						  <option value="E0398-LA PAZ-OLOCUILTA">OLOCUILTA</option>
+						  <option value="E0399-LA PAZ-SANTIAGO NONUALCO">SANTIAGO NONUALCO</option>
+						  <option value="E0400-LA PAZ-ZACATECOLUCA">ZACATECOLUCA</option>
+						  <option value="E0401-LA UNIÓN-CONCHAGUA">CONCHUAGUA</option>
+						  <option value="EO402-SAN MIGUEL-SAN MIGUEL">SAN MIGUEL</option>
+						  <option value="E0403-SAN SALVADOR-APOPA">APOPA</option>
+						  <option value="E0404-SAN SALVADOR-CIUDAD DELGADO">CIUDAD DELGADO</option>
+						  <option value="E0405-SAN SALVADOR-MEJICANOS">MEJICANOS</option>
+						  <option value="E0406-SAN SALVADOR-SAN MARTIN">SAN MARTIN</option>
+						  <option value="E0407-SAN SALVADOR-SAN SALVADOR">SAN SALVADOR</option>
+						  <option value="E0408-SAN SALVADOR-SOYAPANGO">SOYAPANGO</option>
+						  <option value="E0409-SAN VICENTE-SAN VICENTE">SAN VICENTE</option>
+						  <option value="E0410-SANTA ANA-CHALCHUAPA">CHALCHUAPA</option>
+						  <option value="E0411-SANTA ANA-SANTA ANA">SANTA ANA</option>
+						  <option value="E0412-SONSONATE-IZALCO">IZALCO</option>
+						  <option value="E0413-SONSONATE-NAHUIZALCO">NAHUIZALCO</option>
+						  <option value="E0414-SONSONATE-SONSONATE">SONSONATE</option>
+						  <option value="E0415-USULUTÁN-JIQUILISCO">JIQUILISCO</option>
+						  <option value="E0416-USULUTÁN-USULUTÁN">USULUTÁN</option>
+						  
+					</select>
+					<input type="button" onclick="cargarPorDefectoPrimerAnio();" id="epab2" class='botonimagen1' title="Presione para cargar valores">
+				</td>
+			</tr>
+			<tr>
+				<td class='text4' HEIGHT=50% WIDTH=50%>MODALIDAD:</td>
+				<td class='text3'><textarea rows="1" cols="33" class=estilotextarea id="epa2"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa2');" id="epabr9" class='botonimagen'>
+				</td>
+			</tr>
+			<tr>
+				<td class='text4'>AÑO LECTIVO: </td>
+				<td class='text3'><textarea rows="1" cols="6" class=estilotextarea id="epa3"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa3');" id="epab3" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>CÓDIGO: </td>
+				<td class='text3'><textarea rows="1" cols="10" class=estilotextarea id="epa4"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa4');" id="epab4" class='botonimagen'> </td>
+			</tr>
+			
+			<tr>
+				<td class='text4'>NOMBRE DE LA SEDE: </td>
+				<td class='text3'><textarea rows="1" cols="35" class=estilotextarea id="epa5"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa5');" id="epab5" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>GRADO:  </td>
+				<td class='text3'><textarea rows="1" cols="5" class=estilotextarea id="epa6"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa6');" id="epab6" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>SECCIÓN:</td>
+				<td class='text3'><textarea rows="1" cols="5" class=estilotextarea id="epa7"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa7');" id="epab7" class='botonimagen'> </td>
+			</tr>
+		
+			<tr>
+				<td class='text4'>DEPARTAMENTO:</td>
+				<td class='text3'><textarea rows="1" cols="20" class=estilotextarea id="epa8"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa8');" id="epab8" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>MUNICIPIO:</td>
+				<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="epa9"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa9');" id="epab9" class='botonimagen'>
+				</td>			
+			</tr>
+			<tr>
+				<td class='text4'>NOMBRE COORDINADOR/ DE SECCIÓN:</td>
+				<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="epa10"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa10');" id="epab10" class='botonimagen'> </td>		
+			</tr>
+			<tr>
+				<td class='text4'>NOMBRE IMPLEMENTADORA: </td>
+				<td class='text3'><textarea rows="1" cols="30" class=estilotextarea id="epa11"></textarea>
+				...<input type="button" onclick="limpiarTextA('epa11');" id="epab11" class='botonimagen'> </td>			
+			</tr>
+			<tr>
+				<td class='text4'>........................................</td>
+				<td class='text3'>........................................</td>			
+			</tr>
+			<tr>
+				<td class='text4'>...........</td>
+				<td class='text3'>...........</td>			
+			</tr>
+			<tr >
+				<td colspan="2">
+					<center>
+					<input type="button" value="GUARDAR" onclick="guardarHeadPrimerAnio();" id="guardar1" class='boton5'> 
+					
+					<input type="button" value="CARGAR" onclick="cargarHeadPrimerAnio();" id="cargar1" class='boton5'> 
+					
+					<!-- guardarHeadPrimerAnio();   <input type="button" value="ASIGNAR GENERO" onclick="cerrarModal('encabezadoPrimerAnio');" id="cerrar1" class='boton5'> -->
+					</center>
+				</td>			
+			</tr>
+			
+		</table>
+		</center>
+	</div>
+</div>
+
+<div id="encabezadoSegundoAnio" class="modalbg1" >
+  <div class="dialog" style="overflow:scroll; max-height:100%;  margin-top: 10px; margin-bottom:10px; text-align:right; ">
+   		<input type="button" value="TERMINAR" onclick="cerrarModal('encabezadoSegundoAnio');" id="cerrar1" class='boton4'> 
+		<center>
+		<table border="1" HEIGHT=400px WIDTH=800px>
+			<tr>
+				<td id='sola1' rowspan="1" HEIGHT=10% WIDTH=50% class='text1'> --  NOMBRES NO ENCONTRADOS</td>
+				<td id='tablaBusqueda1'  valign="top" HEIGHT=10% WIDTH=50%></td>
+			</tr>
+			<tr>
+				<td id='tablas1' rowspan="1" HEIGHT=100% WIDTH=40% botder=0 valign="top"></td>
+				<td id='tablaResultado1' HEIGHT=100% WIDTH=40% botder=0 valign="top"></td>
+			</tr>	
+		</table>		
+		</center>
+	</div>
+</div>
+
+<div id="cuadroDialogo" class="modalTemporal" >
+  <div class="dialog" style="max-height:100%;  margin-top: 10px; margin-bottom:10px; text-align:right; ">
+   		
+		<center>
+			<table border="0" HEIGHT=75px WIDTH=170px>
+				<tr>
+					<td class='text6'>
+					<center>
+					¿ DESEA GUARDAR ?
+					</center>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<center>
+						<input type="button" value="SI" onclick="guardarBaseSession();cuadroDialogo1Cerrar();" id="cerrar1D" class='botonDialogos'> 	
+						<input type="button" value="NO" onclick="cuadroDialogo1Cerrar();" id="cerrar1D1" class='botonDialogos'>
+						</center>
+					</td>	
+				</tr>
+			</table>
+		</center>
+	</div>
+</div>
+
+<div id="distribuirAlumnos" class="modalTemporal" >
+  <div class="dialog" style="max-height:100%;  margin-top: 10px; margin-bottom:10px; text-align:right; ">
+   		
+		<center>
+			<table border="0" HEIGHT=75px WIDTH=170px>
+				<tr>
+					<td class='text6'>
+					<center>
+					<label id="alumnosDetectados"></label>
+					<br>
+					<label>ES CORRECTO?</label>
+					</center>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<center>
+						<input type="button" value="SI" onclick="distribucion('1');" id="cerrar1DistSi" class='botonDialogos'> 	
+						<input type="button" value="NO" onclick="cuadroDialogoDistCerrar();" id="cerrar1Dist" class='botonDialogos'>
+						</center>
+					</td>	
+				</tr>
+			</table>
+		</center>
+	</div>
+</div>
+
+<div id="cuadroDialogo1" class="modalTemporal" >
+  <div class="dialog" style="max-height:100%;  margin-top: 10px; margin-bottom:10px; text-align:right; ">
+   		
+		<center>
+			<table border="0" HEIGHT=75px WIDTH=170px>
+				<tr>
+					<td class='text6'>
+					<center>
+					¿ CONTINUAR ?
+					</center>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<center>
+						<input type="button" value="SI" onclick="cargarBaseSession();cuadroDialogo2Cerrar();" id="cerrar2D" class='botonDialogos'> 	
+						<input type="button" value="NO" onclick="cuadroDialogo2Cerrar();" id="cerrar2D1" class='botonDialogos'>
+						</center>
+					</td>	
+				</tr>
+			</table>
+		</center>
+	</div>
+</div>
+
+<div id="modalComparar" class="modalComparar" >
+  <div id="cascanueses" class="dialog" style="overflow:scroll; max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		<input type="button" value="TERMINAR" ondblclick="cerrarModal('modalComparar');finalizarComparar();calcularDatos();" id="cerrarComp" class='boton4' 
+		title="
+		Presione dos veces para terminar el proceso
+		Se borraran los datos introducidos en las cajas de texto:
+		NIE
+		NOMBRES SIRAI
+		NOMBRES DE CUADROS DE NOTAS"> 
+		<center>
+		<table id="tablaComparar" border="1" cellspacing=0 cellpadding=2 HEIGHT=400px WIDTH=900px>
+			<tr>
+				<td id="totalNomSirai" class='text8' HEIGHT=5% WIDTH=33%><center></center></td>
+				<td id="totalNomCuadros" class='text8' HEIGHT=5% WIDTH=33%><center></center></td>
+				<td id="totalNombresNoEncontrados" class='text8' HEIGHT=5% WIDTH=33%><center></center></td>
+			</tr>
+			<tr>
+				<td class='text8' HEIGHT=5% WIDTH=33%><center>NOMBRES SIRAI</center></td>
+				<td class='text8' HEIGHT=5% WIDTH=33%><center>NOMBRES CUADROS</center></td>
+				<td class='text8' HEIGHT=5% WIDTH=33%><center>NOMBRES NO ENCONTRADOS</center></td>
+			</tr>
+			<tr>
+				<td id="nomSirai" valign="top" class='text7' HEIGHT=84% WIDTH=33%><center>INGRESE DATOS</center></td>
+				<td id="nomCuadrosPromocion" valign="top" class='text7' HEIGHT=92% WIDTH=33%><center>INGRESE DATOS</center></td>
+				<td id="nomNoEncontrados" valign="top" class='text7' HEIGHT=92% WIDTH=33%><center>INGRESE DATOS</center></td>
+			
+			</tr>
+			
+		</table>	
+		</center>
+	</div>
+</div>
+
+
+
+<div id="encabezadoCertificado" class="modalbg1">
+<center>
+  <div class="dialog" style=" max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		<input type="button" value="COMPLETAR" onclick="enviarEncabezado();cerrarModal('encabezadoCertificado');generarCuadroProm();" id="cerrarCer" class='boton4'> 
+		<center>
+		
+		</center>
+	</div>
+</center>
+</div>
+
+
+
+<div id="encabezadoAlfa" class="modalbg1" >
+  <div class="dialog" style=" max-height:100%;  margin-top: 10px; margin-bottom:10px;">
+   		<input type="button" value="COMPLETAR" onclick="enviarEncabezado();cerrarModal('encabezadoAlfa');generarCuadroProm();" id="cerrar1" class='boton4'> 
+		<center>
+		<table border="0" HEIGHT=100% WIDTH=100% bordercolor="3B0B17" cellspacing=0 cellpadding=1>
+			<tr>
+				<td class='text4' >.................................................................</td>
+				<td class='text3'> .................................................................</td>
+			</tr>
+			<tr>
+				<td class='text4' >.......................................</td>
+				<td class='text3'> .......................................</td>
+			</tr>
+			
+			<tr>
+				<td class='text4' HEIGHT=50% WIDTH=50%>SELECCIONE MUNICIPIO:</td>
+				<td class='text3'>
+					<select id='municipioAlfa' onChange="cargarDatosMunicipioAlfa();">
+						  <option value="" selected="true" disabled>SELECCIONE MUNICIPIO...</option>
+						  <option value="E0391-AHUACHAPÁN-AHUACHAPÁN">AHUACHAPAN</option>
+						  <option value="E0392-CABAÑAS-ILOBASCO">ILOBASCO</option>
+						  <option value="E0393-CUSCATLAN-COJUTEPEQUE">COJUTEPEQUE</option>
+						  <option value="E0394-CUSCATLAN-SAN PEDRO PERULAPÁN">SAN PEDRO PERULAPAN</option>
+						  <option value="E0395-LA LIBERTAD-COLÓN">COLÓN</option>
+						  <option value="E0396-LA LIBERTAD-QUEZALTEPEQUE">QUZALTEPEQUE</option>
+						  <option value="E0397-LA LIBERTAD-SAN JUAN OPICO">SAN JUAN OPICO</option>
+						  <option value="E0398-LA PAZ-OLOCUILTA">OLOCUILTA</option>
+						  <option value="E0399-LA PAZ-SANTIAGO NONUALCO">SANTIAGO NONUALCO</option>
+						  <option value="E0400-LA PAZ-ZACATECOLUCA">ZACATECOLUCA</option>
+						  <option value="E0401-LA UNIÓN-CONCHAGUA">CONCHUAGUA</option>
+						  <option value="EO402-SAN MIGUEL-SAN MIGUEL">SAN MIGUEL</option>
+						  <option value="E0403-SAN SALVADOR-APOPA">APOPA</option>
+						  <option value="E0404-SAN SALVADOR-CIUDAD DELGADO">CIUDAD DELGADO</option>
+						  <option value="E0405-SAN SALVADOR-MEJICANOS">MEJICANOS</option>
+						  <option value="E0406-SAN SALVADOR-SAN MARTIN">SAN MARTIN</option>
+						  <option value="E0407-SAN SALVADOR-SAN SALVADOR">SAN SALVADOR</option>
+						  <option value="E0408-SAN SALVADOR-SOYAPANGO">SOYAPANGO</option>
+						  <option value="E0409-SAN VICENTE-SAN VICENTE">SAN VICENTE</option>
+						  <option value="E0410-SANTA ANA-CHALCHUAPA">CHALCHUAPA</option>
+						  <option value="E0411-SANTA ANA-SANTA ANA">SANTA ANA</option>
+						  <option value="E0412-SONSONATE-IZALCO">IZALCO</option>
+						  <option value="E0413-SONSONATE-NAHUIZALCO">NAHUIZALCO</option>
+						  <option value="E0414-SONSONATE-SONSONATE">SONSONATE</option>
+						  <option value="E0415-USULUTÁN-JIQUILISCO">JIQUILISCO</option>
+						  <option value="E0416-USULUTÁN-USULUTÁN">USULUTÁN</option>
+						  
+					</select>
+					<input type="button" onclick="cargarPorDefectoAlfabetizacion();" id="epalfab2" class='botonimagen1' title="Presione para cargar valores">
+				</td>
+			</tr>
+			<tr>
+				<td class='text4' HEIGHT=50% WIDTH=50%>DEPARTAMENTO:</td>
+				<td class='text3'><textarea rows="1" cols="33" class=estilotextarea id="ea1"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea1');" id="eaa1" class='botonimagen'>
+				</td>
+			</tr>
+			<tr>
+				<td class='text4'>MUNICIPIO: </td>
+				<td class='text3'><textarea rows="1" cols="25" class=estilotextarea id="ea2"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea2');" id="eaa2" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>AÑO: </td>
+				<td class='text3'><textarea rows="1" cols="10" class=estilotextarea id="ea3"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea3');" id="eaa3" class='botonimagen'> </td>
+			</tr>
+			
+			<tr>
+				<td class='text4'>DIRECCIÓN DEL GRUPO EDUCATIVO: </td>
+				<td class='text3'><textarea rows="1" cols="35" class=estilotextarea id="ea4"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea4');" id="eaa4" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>CÓDIGO DEL GRUPO EDUCATIVO:  </td>
+				<td class='text3'><textarea rows="1" cols="5" class=estilotextarea id="ea5"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea5');" id="eaa5" class='botonimagen'> </td>
+			</tr>
+			<tr>
+				<td class='text4'>NIVEL:</td>
+				<td class='text3'><textarea rows="1" cols="5" class=estilotextarea id="ea6"></textarea>
+				...<input type="button" onclick="limpiarTextA('ea6');" id="eaa6" class='botonimagen'> </td>
+			</tr>
+		
+			<tr>
+				<td class='text4'>........................................</td>
+				<td class='text3'>........................................</td>			
+			</tr>
+			<tr>
+				<td class='text4'>...........</td>
+				<td class='text3'>...........</td>			
+			</tr>
+			<tr >
+				<td colspan="2">
+					<center>
+					<!--<input type="button" value="GUARDAR" onclick="guardarHeadPrimerAnio();" id="guardarAlfa" class='boton5'> 
+					
+					<input type="button" value="CARGAR" onclick="cargarHeadPrimerAnio();" id="cargarAlfa" class='boton5'> 
+					
+					 guardarHeadPrimerAnio();   <input type="button" value="ASIGNAR GENERO" onclick="cerrarModal('encabezadoPrimerAnio');" id="cerrar1" class='boton5'> -->
+					 <input type="button" value="ASIGNAR GENERO" onclick="cambiarAsignarGenero('2');editarGenerosTabla();asignarGenerosAbrir();" id="cerrar3" class='boton5'> 
+					</center>
+				</td>			
+			</tr>
+			
+		</table>
+		</center>
+	</div>
+</div>
+
+
+<div id="resultadoDeComparar" class="modalComparar" >
+  <div class="dialog" style="max-height:100%;  margin-top: 10px; margin-bottom:10px; text-align:center;">
+   		<input type="button" value="TERMINAR" onclick="cerrarModal('resultadoDeComparar');" id="cerrarRes" class='boton4' title="Hola">
+		<center>
+			<table border="1" HEIGHT=500px WIDTH=900px>
+				<tr>
+					<td  id="tdResultadoComparar">
+					</td>
+				</tr>
+			<table>
+		</center>
+	</div>
+</div>
+
+
+
+
+
+
+</body>
+</html>
